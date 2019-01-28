@@ -1,0 +1,373 @@
+<div ng-app="job-search" ng-controller="job-search-cntrl as myCntrl">
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2><strong>Search Jobs</strong></h2>
+            <small>View all jobs</small>
+        </div>
+    </div>
+
+    <uib-tabset>
+        <uib-tab index="0" heading="Jobs In Progress" select="getJobsInProgress()">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <strong>Job List</sup> </strong>
+
+                </div>
+                <div class="ibox-content">
+
+                    <div ng-if="jobsInProgress_Loaded">
+                        <i>All jobs currently being worked on (and selectable from 'Record Work')</i></br>
+                        </br>
+                        <select  search-contains="true" multiple chosen data-placeholder="Select Customer" class="chosen-select" style="width:500px;" tabindex="4" ng-options="o as o for o in options.companiesInProgress| orderBy:companiesInProgress" ng-model="options.companiesSelectedInProgress">
+
+                        </select>
+                        </br>
+                        </br>
+                        <table datatable="ng" class="table table-striped table-bordered table-hover dataTables-example" dt-options="dtOptions" dt-column-defs="dtColumnDefs">
+                            <thead>
+                                <tr>
+                                    <th>View Sheet</th>
+                                    <th>Job Number</th>
+                                    <th>Description</th>
+                                    <th>Last Worked On </th>
+                                    <th>Customer </th>
+                                    <th>Machine</th>
+
+                                    <th>ID Number</th>
+
+                                    <th ng-if="AdminAccess(currentUser.accessRights['job_search'])">Status</th>
+                                    <th ng-if="AdminAccess(currentUser.accessRights['job_search'])">Export</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:11px;">
+                                <tr ng-repeat="job in jobsInProgress">
+
+                                    <td>
+                                        <button class="btn btn-primary" ng-click="viewJobSummary(job)"> +
+                                        </button>
+                                    </td>
+                                    <td>{{ job.Job_Number }}</td>
+                                    <td>{{ job.Description }}</td>
+                                    <td>{{ job.Last_Worked }}</td>
+                                    <td> <a ng-click="openWindow(job.Customer_dbid)">{{ job.Customer }}</td>
+                                    <td>{{ job.Machine }}</td>
+
+                                    <td>{{ job.ID_Number }}</td>
+
+                                    <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                        <select ng-model="job.Status" ng-options="option for option in jobStatusOptionsBasic">
+                                        </select>
+                                    </td>
+                                    <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                        <button class="btn btn-primary" ng-click="exportJobSheet(job)"> +
+                                        </button>
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </uib-tab>
+        <uib-tab index="1" heading="Jobs Not In Progress" select="getJobsInQuarrantine()">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <strong>Job List</sup> </strong>
+
+                </div>
+                <div class="ibox-content">
+
+                    <div ng-if="jobsQuarrantined_Loaded">
+                        <i>All jobs not finished but currently not being worked on</i></br>
+                        </br>
+                        <select multiple chosen data-placeholder="Select Customer" class="chosen-select" style="width:500px;" tabindex="4" ng-options="o as o for o in options.companies | orderBy:companies" ng-model="options.companiesSelected">
+
+                        </select>
+                        </br>
+                        </br>
+                        <table datatable="ng" class="table table-striped table-bordered table-hover dataTables-example" dt-options="dtOptions" dt-column-defs="dtColumnDefs">
+                            <thead>
+                                <tr>
+                                    <th>View Sheet</th>
+                                    <th>Job Number</th>
+                                    <th>Description</th>
+                                    <th>Last Worked On </th>
+                                    <th>Customer </th>
+                                    <th>Machine</th>
+                                    <th>Tacho</th>
+                                    <th>Site</th>
+                                    <th>Order Number</th>
+                                    <th>ID Number</th>
+                                    <th ng-if="AdminAccess(currentUser.accessRights['job_search'])">Status</th>
+                                      <th ng-if="AdminAccess(currentUser.accessRights['job_search'])">Export</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:11px;">
+                                <tr ng-repeat="job in jobsQuarrantined">
+
+                                    <td>
+                                        <button class="btn btn-primary" ng-click="viewJobSummary(job)"> +
+                                        </button>
+                                    </td>
+                                    <td>{{ job.Job_Number }}</td>
+                                    <td>{{ job.Description }}</td>
+                                    <td>{{ job.Last_Worked }}</td>
+                                    <td><a ng-click="openWindow(job.Customer_dbid)">{{ job.Customer }}</td>
+                                    <td>{{ job.Machine }}</td>
+                                    <td>{{ job.Tacho }}</td>
+                                    <td>{{ job.Site }}</td>
+                                    <td>{{ job.OrderNumber }}</td>
+                                    <td>{{ job.ID_Number }}</td>
+                                    <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                        <select ng-model="job.Status" ng-options="option for option in jobStatusOptionsBasic">
+                                        </select>
+                                    </td>
+                                    <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                        <button class="btn btn-primary" ng-click="exportJobSheet(job)"> +
+                                        </button>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </uib-tab>
+
+        <uib-tab index="2" heading="Jobs Finished" select="getFinishedJobs()">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <strong>Job List</sup> </strong>
+
+                </div>
+                <div class="ibox-content">
+                    <div ng-if="jobsFinished_Loaded">
+                        <i>All jobs finished but yet to be invoiced</i></br>
+                        </br>
+                        <select multiple chosen data-placeholder="Select Customer" class="chosen-select" style="width:500px;" tabindex="4" ng-options="o as o for o in options.companiesFinished | orderBy:companiesFinished" ng-model="options.companiesSelectedFinished">
+
+                        </select>
+                        </br>
+                        </br>
+                        <table datatable="ng" class="table table-striped table-bordered table-hover dataTables-example" dt-options="dtOptions" dt-column-defs="dtColumnDefs">
+                            <thead>
+                                <tr>
+                                    <th>View Sheet</th>
+                                    <th>Job Number</th>
+                                    <th>Description</th>
+                                    <th>Last Worked On </th>
+                                    <th>Customer </th>
+                                    <th>Machine</th>
+                                    <th>Tacho</th>
+                                    <th>Site</th>
+                                    <th>Order Number</th>
+                                    <th>ID Number</th>
+                                    <th ng-if="AdminAccess(currentUser.accessRights['job_search'])">Status</th>
+                                      <th ng-if="AdminAccess(currentUser.accessRights['job_search'])">Export</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:11px;">
+                                <tr ng-repeat="job in jobsFinished">
+
+                                    <td>
+                                        <button class="btn btn-primary" ng-click="viewJobSummary(job)"> +
+                                        </button>
+                                    </td>
+                                    <td>{{ job.Job_Number }}</td>
+                                    <td>{{ job.Description }}</td>
+                                    <td>{{ job.Last_Worked }}</td>
+                                    <td><a ng-click="openWindow(job.Customer_dbid)">{{ job.Customer }}</td>
+                                    <td>{{ job.Machine }}</td>
+                                    <td>{{ job.Tacho }}</td>
+                                    <td>{{ job.Site }}</td>
+                                    <td>{{ job.OrderNumber }}</td>
+                                    <td>{{ job.ID_Number }}</td>
+                                    <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                        <select ng-model="job.Status" ng-options="option for option in jobStatusOptionsBasic">
+                                        </select>
+                                    </td>
+                                    <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                        <button class="btn btn-primary" ng-click="exportJobSheet(job)"> +
+                                        </button>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </uib-tab>
+        <uib-tab index="3" heading="Jobs Invoiced" select="getInvoicedJobs()">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <strong>Job List</sup> </strong>
+
+                </div>
+                <div class="ibox-content">
+                    <div ng-if="jobsInvoiced_Loaded">
+                        <i>All jobs finished and invoiced</i></br>
+                        </br>
+                        <select multiple chosen data-placeholder="Select Customer" class="chosen-select" style="width:500px;" tabindex="4" ng-options="o as o for o in options.companiesInvoiced | orderBy:companiesInvoiced" ng-model="options.companiesSelectedInvoiced">
+
+                        </select>
+                        </br>
+                        </br>
+                        <table datatable="ng" class="table table-striped table-bordered table-hover dataTables-example" dt-options="dtOptions" dt-column-defs="dtColumnDefs">
+                            <thead>
+                                <tr>
+                                    <th>View Sheet</th>
+                                    <th>Job Number</th>
+                                    <th>Description</th>
+                                    <th>Last Worked On </th>
+                                    <th>Customer </th>
+                                    <th>Machine</th>
+                                    <th>Tacho</th>
+                                    <th>Site</th>
+                                    <th>Order Number</th>
+                                    <th>ID Number</th>
+                                    <th ng-if="AdminAccess(currentUser.accessRights['job_search'])">Status</th>
+                                      <th ng-if="AdminAccess(currentUser.accessRights['job_search'])">Export</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:11px;">
+                                <tr ng-repeat="job in jobsInvoiced">
+
+                                    <td>
+                                        <button class="btn btn-primary" ng-click="viewJobSummary(job)"> +
+                                        </button>
+                                    </td>
+                                    <td>{{ job.Job_Number }}</td>
+                                    <td>{{ job.Description }}</td>
+                                    <td>{{ job.Last_Worked }}</td>
+                                    <td><a ng-click="openWindow(job.Customer_dbid)">{{ job.Customer }}</td>
+                                    <td>{{ job.Machine }}</td>
+                                    <td>{{ job.Tacho }}</td>
+                                    <td>{{ job.Site }}</td>
+                                    <td>{{ job.OrderNumber }}</td>
+                                    <td>{{ job.ID_Number }}</td>
+
+                                    <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                        <select ng-model="job.Status" ng-options="option for option in jobStatusOptionsBasic">
+                                        </select>
+                                    </td>
+                                    <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                        <button class="btn btn-primary" ng-click="exportJobSheet(job)"> +
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </uib-tab>
+        <uib-tab index="4" heading="All Jobs" select="getAllJobs()">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <strong>Job List</sup> </strong>
+
+                </div>
+                <div class="ibox-content">
+
+
+                    <div ng-if="jobsAll_Loaded">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <i>All jobs</i></br>
+                                </br>
+                                <input type="checkbox" ng-model="jobsAllVariables.includeInvoiced" ng-change="getAllJobs()">
+                                <label>Include 'Invoiced' jobs in your search?</label>
+                                </br>
+                                </br>
+
+                                <select multiple chosen data-placeholder="Select Customer" class="chosen-select" style="width:500px;" tabindex="4" ng-options="o as o for o in options.companiesAll | orderBy:companiesAll" ng-model="options.companiesSelectedAll">
+
+                                </select>
+                                </br>
+
+                              </br>
+                            </br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table datatable="ng" class="table table-striped table-bordered table-hover dataTables-example" dt-options="dtOptions" dt-column-defs="dtColumnDefs">
+                                    <thead>
+                                        <tr>
+                                            <th>View Sheet</th>
+                                            <th>Job Number</th>
+                                            <th>Description</th>
+                                            <th>Last Worked On </th>
+                                            <th>Customer </th>
+                                            <th>Machine</th>
+                                            <th>Tacho</th>
+                                            <th>Site</th>
+                                            <th>Order Number</th>
+                                            <th>ID Number</th>
+                                            <th>Status</th>
+                                              <th ng-if="AdminAccess(currentUser.accessRights['job_search'])">Export</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody style="font-size:11px;">
+                                        <tr ng-repeat="job in jobsAll">
+
+                                            <td>
+                                                <button class="btn btn-primary" ng-click="viewJobSummary(job)"> +
+                                                </button>
+                                            </td>
+                                            <td>{{ job.Job_Number }}</td>
+                                            <td>{{ job.Description }}</td>
+                                            <td>{{ job.Last_Worked }}</td>
+                                            <td><a ng-click="openWindow(job.Customer_dbid)">{{ job.Customer }}</td>
+                                            <td>{{ job.Machine }}</td>
+                                            <td>{{ job.Tacho }}</td>
+                                            <td>{{ job.Site }}</td>
+                                            <td>{{ job.OrderNumber }}</td>
+                                            <td>{{ job.ID_Number }}</td>
+                                            <td ng-if="!AdminAccess(currentUser.accessRights['job_search'])">
+                                              {{job.Status}}
+                                            </td>
+                                            <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                                <select ng-model="job.Status" ng-options="option for option in jobStatusOptionsBasic">
+                                                </select>
+                                            </td>
+                                            <td ng-if="AdminAccess(currentUser.accessRights['job_search'])">
+                                                <button class="btn btn-primary" ng-click="exportJobSheet(job)"> +
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </uib-tab>
+    </uib-tabset>
+
+
+
+
+</div>

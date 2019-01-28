@@ -1,0 +1,33 @@
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+    <div>
+        <div>
+            <h2>Trakk-IT Portal</h2>
+        </div>
+        <h3>Welcome to Trakk-IT Portal</h3>
+
+        <p>Login in. To see it in action.</p>
+
+        <form name="loginForm" ng-controller="loginController" ng-submit="login()">
+
+            <div class="form-group">
+              User Name
+              <select class = "form-control" ng-options = "x.UserName for x in availableUsers" ng-model="selectedUsername"></select>
+
+            </div>
+
+            <div class="form-group">
+                <div ng-if="loginSuccess" class="alert alert-success">
+                    Successful Login!
+                </div>
+
+                <div ng-if="loginFailed" class="alert alert-danger">
+                    Incorrect Email or Password!
+                </div>
+            </div>
+            <button class="btn btn-primary block full-width m-b" type="submit">Login</button>
+        </form>
+
+
+        <p class="m-t"> <small>Trakk-IT &copy; 2016</small> </p>
+    </div>
+</div>

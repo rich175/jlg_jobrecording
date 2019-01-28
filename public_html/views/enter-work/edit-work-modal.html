@@ -1,0 +1,60 @@
+<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Edit Work</h4>
+
+        <h2 align="center"><i>- - Original #: {{initalJobNumber}} - -</i></h2>
+    </div>
+    <div class="modal-body">
+        <form>
+
+            <div class="row">
+                <p>Job Number: <select chosen ng-style="jobStyle" class="form-control" ng-model="jobSelected" ng-change="jobChange()" ng-options="x.Job_Number for x in jobsInProgress | orderBy:'Job_Number'"><option><option></select></p>
+            </div>
+            <div class="row">
+                <h3>Job Number: <font color="black"> {{jobSelected.Job_Number}}</font></h3>
+                <h3>Customer: <font color="black">{{jobSelected.Customer}}</font></h3>
+                <h3>Job Description:<font color="black"> {{jobSelected.Description}}</font></h3>
+                <h3>Machine: <font color="black">{{jobSelected.Machine}}</font></h3>
+                <h3>Serial: <font color="black">{{jobSelected.ID_Number}}</font></h3>
+
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Description</h3>
+                    <textarea ng-style="noteStyle" rows="10" cols="50" class="form-control" ng-model="newWork.work.Notes" ng-change="notesChange()"> </textarea>
+                </div>
+                <div class="col-md-4">
+                    <h3>Materials</h3>
+                    <textarea ng-style="materialStyle" rows="10" cols="50" class="form-control" ng-model="newWork.work.Materials" ng-change="materialsChange()"> </textarea>
+                </div>
+                <div class="col-md-4">
+                    <h3>Start Time:</h3>
+                    <div uib-timepicker ng-model="newWork.work.StartTime" ng-change="workTimeChange()" hour-step="1" minute-step="15" show-meridian="ismeridian"></div>
+                    </br>
+
+                    <h3>Finish Time:</h3>
+                    <div uib-timepicker ng-model="newWork.work.EndTime" ng-change="workTimeChange()" hour-step="1" minute-step="15" show-meridian="ismeridian"></div>
+
+                    <h3>{{isValid.reason}}</h3>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+    <div class="modal-footer">
+        <div class='col-sm-2'>
+            <button type="button" class="btn btn-danger" ng-click="delete()">Delete</button>
+        </div>
+        <div class='col-sm-3'>
+        </div>
+        <div class='col-sm-2'>
+            <button type="button" class="btn btn-primary" ng-click="cancel()">Cancel</button>
+        </div>
+        <div class='col-sm-3'>
+        </div>
+        <div class='col-sm-2'>
+            <button type="button" class="btn btn-primary" ng-disabled="!isValid.status" ng-click="ok()">OK</button>
+        </div>
+    </div>
+</div>

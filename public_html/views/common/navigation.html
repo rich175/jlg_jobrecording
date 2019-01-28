@@ -1,0 +1,80 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul side-navigation class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div>
+                    <span class="block m-t-xs" align="center">
+
+    					  <img class="img-responsive center-block" src="./img/jlg_logo2.png" style="padding-bottom:20px" />
+    					  <strong class = "font-bold"><font color="white"> Welcome:</font></strong></br>
+                <div ng-if="currentUser"><font color="white">{{ currentUser.email }}</font></div>
+
+                </span>
+    </div>
+    </li>
+
+    <li ui-sref-active="active" ng-if="currentUser.accessRights['dashboard'] != 0">
+        <a ui-sref="index.dashboard"><i class="fa fa-tachometer"></i> <span class="nav-label">Dashboard</span></a>
+    </li>
+    <li ui-sref-active="active" ng-if="currentUser.accessRights['job_search'] != 0">
+        <a ui-sref="index.jobSearch"><i class="fa fa-search"></i> <span class="nav-label">Job Search</span></a>
+    </li>
+    <li ui-sref-active="active" ng-if="currentUser.accessRights['enter_work'] != 0">
+        <a ui-sref="index.enter-work"><i class="fa fa-save"></i> <span class="nav-label">Record Work</span></a>
+    </li>
+
+    <li ui-sref-active="active" ng-if="currentUser.accessRights['all_jobs'] != 0">
+        <a href=""></i><i class="fa fa-list-ul"></i><span class="nav-label">Jobs</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level">
+            <li ui-sref-active="active" ng-if="currentUser.accessRights['create_job'] != 0">
+                <a ui-sref="index.create-job"><i class="fa fa-thumb-tack"></i> <span class="nav-label">Create Job</span></a>
+            </li>
+            <li ui-sref-active="active" ng-if="currentUser.accessRights['edit_job'] != 0">
+                <a ui-sref="index.edit-job"><i class="fa fa-edit"></i> <span class="nav-label">Edit Job</span></a>
+            </li>
+
+            <li ui-sref-active="active" ng-if="currentUser.accessRights['all_jobs'] != 0">
+                <a ui-sref="index.all-jobs"><i class="fa fa-folder-open-o"></i> <span class="nav-label">Add Notes</span></a>
+            </li>
+        </ul>
+    </li>
+    <li ui-sref-active="active" ng-if="(currentUser.accessRights['create_customer'] != 0 || currentUser.accessRights['edit_customer'] != 0)">
+        <a href=""></i><i class="fa fa-users"></i><span class="nav-label">Customers</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level">
+            <li ui-sref-active="active" ng-if="currentUser.accessRights['create_customer'] != 0">
+                <a ui-sref="index.create-customer"><i class="fa fa-user"></i> <span class="nav-label">Manage Customers</span></a>
+            </li>          
+
+        </ul>
+    </li>
+    <li ui-sref-active="active" ng-if="(currentUser.accessRights['book_material'] != 0 || currentUser.accessRights['material_stock'] != 0)">
+        <a href=""></i><i class="fa fa-truck"></i><span class="nav-label">Material</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level">
+            <li ui-sref-active="active" ng-if="currentUser.accessRights['book_material'] != 0">
+                <a ui-sref="index.material-in"><i class="fa fa-plus-square-o"></i> <span class="nav-label">Book Material In</span></a>
+            </li>
+            <li ui-sref-active="active"  ng-if="currentUser.accessRights['material_stock'] != 0">
+                <a ui-sref="index.material-stock"><i class="fa fa-square"></i> <span class="nav-label">View Stock</span></a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li ui-sref-active="active"  ng-if="currentUser.accessRights['engineers_details'] != 0">
+        <a href=""></i><i class="fa fa-wrench"></i><span class="nav-label">Engineers</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level">
+            <li ui-sref-active="active"  ng-if="currentUser.accessRights['engineers_details'] != 0">
+                <a ui-sref="index.engineers-details"><i class="fa fa-child"></i> <span class="nav-label">Details</span></a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li ng-if="currentUser.userRole == userRoles.admin" ui-sref-active="active">
+        <a ui-sref="admin.adminPage"><i class="fa fa-bus"></i> <span class="nav-label">Admin</span></a>
+    </li>
+
+    </ul>
+
+    </div>
+</nav>

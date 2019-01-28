@@ -1,0 +1,96 @@
+{
+    "title": "fastener",
+    "first": {
+        "name": "type",
+        "fields": [{
+            "id": "0",
+            "name": "standard bolt",
+            "abreviation": "BL"
+        }, {
+            "id": "1",
+            "name": "nut",
+            "abreviation": "NT"
+        }, {
+            "id": "2",
+            "name": "cap screw",
+            "abreviation": "CP"
+        }, {
+            "id": "3",
+            "name": "pin",
+            "abreviation": "PI"
+        }]
+
+    },
+    "second": {
+        "name": "spec",
+        "fields": [{
+            "id_1": ["0", "1"],
+            "id": "0",
+            "name": "metric",
+            "abreviation": "ME",
+            "description": "type"
+        }, {
+            "id_1": ["0"],
+            "id": "1",
+            "name": "unf",
+            "abreviation": "UNF",
+            "description": "type"
+        }, {
+            "id_1": ["0"],
+            "id": "2",
+            "name": "xxx",
+            "abreviation": "xxx",
+            "description": "type"
+        }, {
+            "id_1": ["0"],
+            "id": "3",
+            "name": "bsf",
+            "abreviation": "BSF",
+            "description": "type"
+        }, {
+            "id_1": ["0"],
+            "id": "4",
+            "name": "bsw",
+            "abreviation": "BSW",
+            "description": "type"
+        }]
+    },
+    "third": {
+        "name": "grade",
+        "fields": [{
+            "id_1": ["0"],
+            "id_2": ["0"],
+            "id": "0",
+            "name": "8.8",
+            "abreviation": "88",
+            "description": "grade"
+        }, {
+            "id_1": ["0"],
+            "id_2": ["0"],
+            "id": "1",
+            "name": "10.8",
+            "abreviation": "108",
+            "description": "grade"
+        }, {
+            "id_1": ["1"],
+            "id_2": ["0"],
+            "id": "1",
+            "name": "Nyloc",
+            "abreviation": "Ny",
+            "description": "type"
+        }]
+    },
+    "fourth":
+    {
+      "name": "spec 4",
+      "fields":[{
+          "id_1": ["0", "1"],
+        "id_3": ["0", "1", "3"],
+        "id": "0",
+        "name": "",
+        "abreviation": "88",
+        "type": "input",
+        "description": "Diameter"
+        }]
+    }
+}

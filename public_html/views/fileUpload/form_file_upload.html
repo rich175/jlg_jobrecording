@@ -1,0 +1,100 @@
+<div ng-app="files" ng-controller="file-cntrl as files">
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>File Manager</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+
+                <li class="active">
+                    <strong>File Manager</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row  border-bottom white-bg dashboard-header">
+                    <div class="col-lg-12">
+
+
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-content">
+                                        <div class="file-manager">
+                                            <div ng-if="AdminAccess(currentUser.accessRights['file_manager'])">
+                                                <button class='btn btn-primary btn-block' ng-click="openUpload()">Upload Files</button>
+                                                <div class="hr-line-dashed"></div>
+                                            </div>
+                                            <h5>Folders</h5>
+                                            <ul class="folder-list" style="padding: 0">
+                                                <li>
+                                                  <div ng-show="AdminAccess(currentUser.accessRights['file_manager'])">
+                                                    <a href="" ng-click="viewFiles = data.uploadedBy; viewText = 'All';"><i class="fa fa-folder"></i> All ({{data.uploadedBy.length}})</a>
+                                                  </div>
+                                                  <div ng-show="!AdminAccess(currentUser.accessRights['file_manager'])">
+                                                    <a href="" ng-click="viewFiles = data.uploadedFor; viewText = 'All';"><i class="fa fa-folder"></i> All ({{data.uploadedFor.length}})</a>
+                                                  </div>
+                                                </li>
+                                                <div ng-repeat="(keyYear, value) in organisedFiles">
+                                                    <li><a href="" ng-click="setViewFiles(organisedFiles,keyYear,false)"><i class="fa fa-folder"></i> {{keyYear}}</a></li>
+                                                    <div ng-repeat="(keyMonth, value) in value">
+                                                      <li style = " padding-left: 20px;">
+                                                        <a href="" ng-click="setViewFiles(organisedFiles,keyYear,keyMonth)"><i class="fa fa-folder"></i> {{keyMonth | monthName}} ({{value.length}}) </a>
+                                                      </li>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="row">
+                                  <h1 style="text-align: center;">{{viewText}}</h1>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="col-lg-12">
+                                          <div ng-repeat="(key, value) in viewFiles">
+                                              <div class="file-box">
+                                                  <div class="file">
+                                                      <a tooltip-placement="top" uib-tooltip="{{value.original_filename}}" href="" ng-click="downloadFile(downloadUrl+value.filename)">
+                                                          <span class="corner"></span>
+
+                                                          <div class="icon">
+                                                              <div ng-if="value.extension == 'pdf' || value.extension == 'PDF'">
+                                                                  <i class="fa fa-file-pdf-o"></i>
+                                                              </div>
+                                                              <div ng-if="value.extension == 'xls' || value.extension == 'xlsx' || value.extension == 'XLS' || value.extension == 'XLSX'">
+                                                                  <i class="fa fa-bar-chart-o"></i>
+                                                              </div>
+                                                          </div>
+                                                          <div class="file-name">
+                                                              <div  style="white-space:nowrap; word-wrap: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                {{value.original_filename}}
+                                                              </div>
+                                                              </a>
+                                                              <small>Added: {{value.upload_date | date:'dd/MM/yy'}}</small></br>
+                                                              <small>Size: {{value.size_kb}} kb</small></br>
+                                                              <div ng-if="AdminAccess(currentUser.accessRights['file_manager'])">
+                                                              <small>For: {{value.access_company}}</small> <a tooltip-placement="bottom" uib-tooltip="Delete {{value.original_filename}}" href =""><div ng-click="deletefile(value.file_id)" style="left-padding: 10px;color:red;" class="fa fa-trash"></div></a>
+                                                              </div>
+                                                          </div>
+
+                                                  </div>
+                                              </div>
+                                          </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

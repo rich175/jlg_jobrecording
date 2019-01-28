@@ -1,0 +1,79 @@
+<div ng-app="dash" ng-controller="dash-cntrl as myCntrl">
+  <div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+      <h2><strong>Dashboard</strong></h2>
+      <small></small>
+    </div>
+  </div>
+  <div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>Work Booked To Jobs</h5>
+
+            <div ibox-tools></div>
+          </div>
+          <div class="ibox-content">
+            <div class="row">
+              <div class="col-lg-3">
+                <h3>From:</h3>
+
+                <input type="text" maxlength="10" class="form-control" ng-model="dateString"></input>
+              </div>
+              <div class="col-lg-3">
+                <h3>To:</h3>
+
+                <input type="text" maxlength="10" class="form-control" ng-model="dateString2"></input>
+              </div>
+              <div class="col-lg-3">
+                </br>
+                </br>
+                <button class="btn-primary btn-md" ng-click="changeDate()">Select</button>
+              </div>
+            </div>
+            </br>
+            <!--<div class="row">
+              <div class="col-lg-12">
+                <div ng-if="work.loaded">
+                  <canvas id="line" class="chart chart-line" chart-data="lineData" chart-labels="summaryLabels" chart-series="lineSeries" chart-options="summaryMonthOptions">
+</canvas>
+                </div>
+              </div>
+
+            </div>-->
+            <div class="row" ng-if="(AdminAccess(currentUser.accessRights['dashboard'])=== 'user')">
+              <div ng-repeat="usr in users.users">
+                <div ng-if="usr.totalWork > 0 && usr.firstName == currentUser.email">
+                  <div class="col-lg-5">
+                    <h2>{{usr.firstName}} ---- {{usr.totalWork}}hrs</h2>
+                    <canvas id="line" class="chart chart-bar" chart-data="summarySeries[$index].data" chart-labels="summaryLabels" chart-series="summarySeries[$index].name" chart-options="summaryMonthOptions"  chart-colors="colourArray">
+</canvas>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-if="(AdminAccess(currentUser.accessRights['dashboard'])=== 'user_admin')">
+              <div ng-repeat="usr in users.users">
+                <div ng-if="usr.totalWork > 0">
+                  <div class="col-lg-5">
+                    <h2>{{usr.firstName}} ---- {{usr.totalWork}}hrs</h2>
+                    <canvas id="line" class="chart chart-bar" chart-data="summarySeries[$index].data" chart-labels="summaryLabels" chart-series="summarySeries[$index].name" chart-options="summaryMonthOptions" chart-colors="colourArray">
+</canvas>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>

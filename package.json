@@ -1,0 +1,29 @@
+{
+  "name": "frostNode",
+  "version": "0.0.1",
+  "description": "Services to support the Frostnet web application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/porkyneal/frostNode.git"
+  },
+  "author": "A.D.Neal",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "~1.14.2",
+    "cors": "~2.7.1",
+    "express": "~4.13.3",
+    "file-stream-rotator": "~0.0.6",
+    "jsonwebtoken": "^5.5.4",
+    "morgan": "~1.6.1",
+    "multer": "^1.1.0",
+    "mysql": "~2.10.2",
+    "node-uuid": "^1.4.7",
+    "nodemailer": "^2.4.2",
+    "winston": "^2.2.0"
+  }
+}

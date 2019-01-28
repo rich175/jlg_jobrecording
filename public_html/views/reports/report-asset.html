@@ -1,0 +1,180 @@
+<div ng-app = "report-asset" ng-controller="report-asset-cntrl as myCntrl">
+
+	<div class="row wrapper border-bottom white-bg page-heading" >
+		<div class="col-lg-10">
+			<h2><strong>BR Report</strong></h2>
+			<small>view all assets by BR Number</small>
+		</div>
+	</div>
+
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<strong>Search Filters</sup> </strong>
+
+		</div>
+		<div class="ibox-content">
+			<div class = "row">
+				<div class="col-lg-3">
+					<div class="panel panel-default" >
+						<div class="panel-heading text-center">
+							<h3><strong>Select BR Number</strong></h3>
+						</div>
+						<div class="panel-body text-center" ng-if="initilised">
+							<div >
+
+								<select class="form-control"  ng-options = "o as o for o in BRs"
+									ng-model="BRs.selected" >
+
+								</select>
+
+								<div class = "row">
+								<br>
+								<br>
+								<button class="btn btn-sm btn-primary m-t-n-xs " ng-click= "getData()"><strong>Fetch</strong></button>
+								</div>
+							</div>
+
+						</div>
+					 </div>
+				</div>
+
+
+				<div class="col-lg-3">
+					<div class="panel panel-default" >
+						<div class="panel-heading text-center">
+							<h3><strong>BR Information</strong></h3>
+						</div>
+						<div class="panel-body text-center" >
+							Total Products: {{brInfo.total_products}}
+							<br>
+							First Seen : {{brInfo.first_date}}
+							<br>
+							Number Finished: {{brInfo.finished}}
+						</div>
+					 </div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<tabset >
+		<tab style = "font-size: 16px;" heading = "Overview" select="tabSelect('overview')">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<strong>Graphical Analysis</sup> </strong>
+
+				</div>
+				<div class="ibox-content">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="panel panel-default" >
+								<div class="panel-heading text-center">
+									<h2><strong>Product Status</strong></h2>
+									</div>
+								<div class="panel-body text-center" >
+									<canvas id="pie" class="chart chart-pie"
+									  chart-data="chartData.data" chart-labels="chartData.labels" chart-legend="true" chart-click="onClick"
+										chart-colours ="chartData.colours">
+									</canvas>
+								</div>
+
+							 </div>
+						</div>
+						<div class="col-lg-6">
+							<div class="panel panel-default" >
+								<div class="panel-heading text-center">
+									<h2><strong>Product Mix</strong></h2>
+								</div>
+								<div class="panel-body text-center" >
+									<canvas id="pie" class="chart chart-pie"
+									  chart-data="chartData2.data" chart-labels="chartData2.labels" chart-legend="true">
+									</canvas>
+								</div>
+
+							 </div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</tab>
+		<tab style = "font-size: 16px;" heading = "Table" select="tabSelect('report')">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<strong>Report View</sup> </strong>
+
+				</div>
+				<div class="ibox-content">
+
+
+
+
+
+					<div ng-if = "dataLoaded && reportSelected">
+								<table datatable="ng" class="table table-striped table-bordered table-hover dataTables-example" dt-options="dtOptions"
+									dt-column-defs="dtColumnDefs">
+									<thead>
+										<tr>
+											<th>Type</th>
+											<th>Serial</th>
+											<th>Manuf</th>
+											<th>Model</th>
+											<th>Spec</th>
+											<th>Route</th>
+											<th>BR Number</th>
+
+											<th>Visual Grade</th>
+											<th>Comments</th>
+											<th>PAT</th>
+											<th>Data Erasure</th>
+											<th>Certificate</th>
+											<th>Functional Test</th>
+											<th>Failure Reason</th>
+											<th>Repair</th>
+											<th>Cleaning/Scrap</th>
+											<th>Label ID</th>
+											<th>Last seen</th>
+										</tr>
+									</thead>
+									<tbody style="font-size:11px;">
+										<tr ng-repeat="product in ::assetData">
+
+											<td>{{ ::product.type }}</td>
+											<td>{{ ::product.serial }}</td>
+											<td>{{ ::product.manuf }}</td>
+											<td>{{ ::product.model }}</td>
+											<td>{{ ::product.spec }}</td>
+											<td>{{ ::product.Route }}</td>
+											<td>{{ ::product.br_no }}</td>
+
+											<td>{{ ::product.vi }}</td>
+											<td>{{ ::product.comments }}</td>
+											<td>{{ ::product.pat }}</td>
+											<td>{{ ::product.de }}</td>
+
+											<td>
+												<div ng-show = "product.link">
+													<a ng-href="{{ ::product.cert }}"> download </a>
+												</div>
+												<div ng-show = "!product.link">
+													{{ ::product.cert }}
+												</div>
+											</td>
+											<td>{{ ::product.ft }}</td>
+											<td>{{ ::product.failure }}</td>
+											<td>{{ ::product.rep }}</td>
+											<td>{{ ::product.finalP }}</td>
+											<td>{{ ::product.Label }}</td>
+											<td>{{ ::product.last_seen }}</td>
+
+									  </tr>
+									</tbody>
+								</table>
+							</div>
+				</div>
+			</div>
+		</tab>
+
+	</tabset>
+
+</div>

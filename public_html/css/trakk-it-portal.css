@@ -1,0 +1,46 @@
+.uib-tab .uib-tab-nav {
+    background: lightblue;
+}
+
+.uib-tab .ui-tabs-panel
+/* just in case you want to change the panel */
+
+{
+    background: blue;
+}
+#pre_text {
+    height: auto;
+    max-height: 170px;
+    overflow: auto;
+    /*overflow-y: none;*/
+
+}
+
+#scroll_container {
+
+    background-color: #CCC;
+    overflow: auto;
+
+    white-space:nowrap;
+}
+.uib-day .btn-default {
+   background-color: orange;
+}
+.uib-day .btn-default:hover {
+   background-color: white;
+}
+.uib-day .btn-default:focus {
+   background-color: red;
+}
+.uib-day .btn-default:active {
+   background-color: green;
+}
+.uib-day .btn-default.active:focus {
+   background-color: green;
+}
+
+.uib-day .btn-info.active {
+    background-color:green  ;
+    border-color: #21b9bb;
+    color: #FFFFFF;
+}

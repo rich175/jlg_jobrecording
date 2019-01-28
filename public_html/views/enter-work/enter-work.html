@@ -1,0 +1,233 @@
+<div ng-app="enter-work" ng-controller="enter-work-cntrl as myCntrl">
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2><strong>Enter Work</strong></h2>
+            <small>Use this page to record work</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <strong>Search for Job</sup> </strong>
+                </div>
+                <div class="ibox-content">
+                    <div class="row" style="height:800px">
+                        <div class="col-lg-7">
+                            <uib-progressbar max="4" value="currentStep"></uib-progressbar>
+
+                            <uib-tabset active="active">
+
+                                <uib-tab index="0" heading="Select Date" select="progress(0)" active="tabs[0].active" disable="tabs[0].disabled">
+                                    </br>
+                                    <h3> Select the desired day using the calender below: </h3>
+
+                                    </br>
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div style="display:inline-block; min-height:290px; text-align:center; margin-left:auto; margin-right:auto;">
+                                                <div template-url="views/enter-work/datepicker.html" uib-datepicker ng-model="initalCalendar.dt" class="well well-sm" datepicker-options="initalCalendar.options"></div>
+                                            </div>
+                                            <p><i>Go to Today's Date</i></p>
+                                            <button class="btn btn-primary" ng-click="today()">Today</button>
+                                        </div>
+                                        <div class="col-md-5">
+                                            </br>
+                                            </br>
+                                            <div style="text-align:center">
+                                                <h3>Press 'Continue' to select job</h3>
+                                                <button class="btn btn-lg btn-primary" ng-click="moveToTab(0,1)">Continue</button>
+                                            </div>
+                                        </div>
+
+
+                                        <!--<div class="col-md-6 col-md-offset-3">
+                                            <div class="row">
+                                                <div style="display:inline-block; min-height:290px; text-align:center; margin-left:auto; margin-right:auto;">
+                                                    <div template-url="views/enter-work/datepicker.html" uib-datepicker ng-model="initalCalendar.dt" class="well well-sm" datepicker-options="initalCalendar.options"></div>
+                                                </div>
+                                            </div>
+                                            <div style="text-align:center">
+
+                                                <button class="btn btn-primary" ng-click="today()">Today</button>
+
+                                                </br>
+                                                </br>
+                                                <h3>Press 'Done' or move to the next tab to continue</h3>
+                                                <button class="btn btn-lg btn-primary" ng-click="moveToTab(0,1)">Done</button>
+                                            </div>
+
+                                        </div>-->
+                                    </div>
+
+
+                                </uib-tab>
+                                <uib-tab index="1" heading="Select Job" select="progress(1)" active="tabs[1].active" disable="tabs[1].disabled">
+                                    </br>
+                                    <div ng-if="jobsInProgress_Loaded">
+                                        <table datatable="ng" class="table table-striped table-bordered table-hover dataTables-example" dt-options="dtOptions" dt-column-defs="dtColumnDefs">
+                                            <thead>
+                                                <tr>
+                                                    <th>Select</th>
+                                                    <th>Job Number</th>
+                                                    <th>Description</th>
+                                                    <th>Last Worked On </th>
+                                                    <th>Customer </th>
+                                                    <th>Machine</th>
+                                                    <th>ID Number</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="font-size:11px;">
+                                                <tr ng-repeat="job in jobsInProgress">
+                                                    <td><button class="btn btn-primary" ng-click="selectJob(job)">*</button></td>
+                                                    <td>{{ job.Job_Number }}</td>
+                                                    <td>{{ job.Description }}</td>
+                                                    <td>{{ job.Last_Worked }}</td>
+                                                    <td>{{ job.Customer }}</td>
+                                                    <td>{{ job.Machine }}</td>
+                                                    <td>{{ job.ID_Number }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </uib-tab>
+                                <uib-tab index="2" heading="Select Time" select="progress(2)" active="tabs[2].active" disable="tabs[2].disabled">
+                                    </br>
+
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h3>Job Number: <font color="black"> {{thisWork.job.Job_Number}}</font></h3>
+                                            <h3>Customer: <font color="black"> {{thisWork.job.Customer}}</font></h3>
+                                            <h3>Job Description: <font color="black"> {{thisWork.job.Description}}</font></h3>
+                                            <h3>Machine:<font color="black">  {{thisWork.job.Machine}}</font></h3>
+                                            <h3>Serial: <font color="black"> {{thisWork.job.ID_Number}}</font></h3>
+											<h3>Order Number: <font color="black"> {{thisWork.job.OrderNumber}}</font></h3>
+											<h3>Tacho: <font color="black"> {{thisWork.job.Tacho}}</font></h3>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h3>Start Time:</h3>
+                                            <div uib-timepicker ng-model="thisWork.start" ng-change="workTimeChange()" hour-step="1" minute-step="15" show-meridian="ismeridian"></div>
+                                            </br>
+                                            </br>
+                                            <h3>Finish Time:</h3>
+                                            <div uib-timepicker ng-model="thisWork.end" ng-change="workTimeChange()" hour-step="1" minute-step="15" show-meridian="ismeridian"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div style="text-align:center">
+                                                <h3>{{isValid.reason}}</h3>
+                                                </br>
+                                                <button class="btn btn-primary" ng-disabled="!isValid.status" ng-click="moveToTab(2,3)">Done</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                                <uib-tab index="3" heading="Enter Details" select="progress(3)" active="tabs[3].active" disable="!isValid.status">
+                                    </br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Job Number: <font color="black"> {{thisWork.job.Job_Number}}</font></h3>
+                                            <h3>Customer: <font color="black"> {{thisWork.job.Customer}}</font></h3>
+                                            <h3>Job Description: <font color="black"> {{thisWork.job.Description}}</font></h3>
+                                            <h3>Machine:<font color="black">  {{thisWork.job.Machine}}</font></h3>
+                                            <h3>Serial: <font color="black"> {{thisWork.job.ID_Number}}</font></h3>
+											<h3>Order Number: <font color="black"> {{thisWork.job.OrderNumber}}</font></h3>
+											<h3>Tacho: <font color="black"> {{thisWork.job.Tacho}}</font></h3>
+                                        </div>
+                                    </div>
+                                    </br>
+                                    </br>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <h3>Description</h3>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label></br></label>
+                                                    <textarea rows="4" cols="50" class="form-control" ng-model="thisWork.description" required placeholder="Work here..."> </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <h3>Materials</h3>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Quantity:</label>
+                                                        <input type="text" class="form-control" ng-model="tempMaterial.material.QTY">
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Description:</label>
+                                                        <input type="text" class="form-control" ng-model="tempMaterial.material.Description">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Add:</label>
+                                                        <button class="btn-primary" ng-click="addMaterial()">+</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="row" ng-if="!tempMaterial.change">
+                                                <div class="col-md-12">
+                                                    <div ng-repeat="mat in thisWork.materialAdded">
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                {{mat.QTY}} x
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                {{mat.Description}}
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <button class="btn-primary" ng-click="removeMaterial(mat)">-</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div style="text-align:center">
+                                                <button class="btn btn-primary" ng-click="saveWorkInstance()">Save Work</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div style="text-align:center">
+                                                <i>to cancel and go back, please refresh the page (F5)</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                            </uib-tabset>
+
+                            <div class="row">
+                            </div>
+                            <div class="row">
+                            </div>
+                            <div class="row">
+                            </div>
+                            <div class="row">
+                            </div>
+                            <div class="row">
+                            </div>
+                        </div>
+                        <div class="col-lg-5" ng-show="!loadingWork">
+
+                            <div class="calendar" ng-model="calObjects.eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

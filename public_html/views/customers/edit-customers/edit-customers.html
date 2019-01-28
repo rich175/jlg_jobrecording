@@ -1,0 +1,82 @@
+<div ng-app="edit-customers" ng-controller="edit-customers-cntrl as myCntrl">
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2><strong>Edit Customers</strong></h2>
+            <small>Use this page to edit exisiting customers</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3" style="text-align:center">
+            <label>Select Customer</label>
+
+            <select chosen
+            search-contains="true"
+            create-option-text="'Create item'"
+        persistent-create-option="true"
+        skip-no-results="true"
+        create-option="createOption"
+            data-placeholder="Select Customer"
+            class="form-control"
+            ng-change = "customerSelected()"
+            ng-model="selected.customer"
+            ng-options="x as x.Customer for x in customers | orderBy:'Customer'">
+              <option value=""></option>
+            </select>
+
+        </div>
+
+    </div>
+    <div class="row">
+        </br>
+        </br>
+        <div class="col-md-3">
+            <label>Company/Customer Name</label>
+            <input class="form-control" ng-model="editedCustomer.Customer" type="text"></input>
+        </div>
+
+
+    </div>
+    <div class = "row">
+      <div class = "col-lg-4">
+        <label>Contact Name</label>
+        <input class="form-control" ng-model="editedCustomer.Contact" type="text"></input>
+      </div>
+      <div class = "col-lg-4">
+        <label>Primary Contact Number</label>
+        <input class="form-control" ng-model="editedCustomer.Phone" type="text"></input>
+      </div>
+      <div class = "col-lg-4">
+        <label>Secondary Contact Number</label>
+        <input class="form-control" ng-model="editedCustomer.Phone2" type="text"></input>
+      </div>
+    </div>
+    <div class = "row">
+      <div class = "col-lg-4">
+        <label>Email</label>
+        <input class="form-control" ng-model="editedCustomer.Email" type="text"></input>
+      </div>
+      <div class = "col-lg-4">
+        <label>Address</label>
+        <input class="form-control" ng-model="editedCustomer.Address" type="text"></input>
+      </div>
+      <div class = "col-lg-4">
+        <label>Postcode</label>
+        <input class="form-control" ng-model="editedCustomer.Postcode" type="text"></input>
+      </div>
+    </div>
+    </br>
+    </br>
+    <div class="row">
+        <div class="col-md-3" style="text-align:center">
+            <button ng-click="saveCustomer()" class="btn-primary btn-lg" ng-disabled="saving">Save Customer</button>
+        </div>
+
+    </div>
+    <div class="row" ng-show = "errorMessage.length > 0">
+        <div class="col-md-3" style = "text-align:center">
+            <h3>{{errorMessage}}</h3>
+        </div>
+    </div>
+</div>
+</div>
