@@ -27,7 +27,7 @@ router.get('/', function(req, res) {
                       phone2 AS Phone2,\
                       email AS Email, \
                     contact_name AS Contact\
-                     FROM jlgeorge.customer;";
+                     FROM jlgeorge_test.customer;";
         mysql.query(sqlQuery, req.params.jobNumber_DB, function(err2, rows) {
             if (!err2) {
                 res.json(rows);
@@ -56,7 +56,7 @@ router.get('/:id', function(req, res) {
                       phone2 AS Phone2,\
                       email AS Email, \
                     contact_name AS Contact\
-                     FROM jlgeorge.customer \
+                     FROM jlgeorge_test.customer \
                      WHERE idcustomer = ?";
         mysql.query(sqlQuery, req.params.id, function(err2, rows) {
             if (!err2) {

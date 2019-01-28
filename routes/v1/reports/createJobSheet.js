@@ -24,7 +24,7 @@ router.get('/:jobNumber', function(req, res) {
         //logger.debug(user);
 
 
-        mysql.query("SELECT a.*, b.firstname FROM jlgeorge.work_instance a\
+        mysql.query("SELECT a.*, b.firstname FROM jlgeorge_test.work_instance a\
                 JOIN employee b\
                 ON b.idemployee = a.employee_idemployee\
                 WHERE job_idjob = (SELECT idjob FROM job WHERE jlg_jobnumber = ?)\
@@ -74,7 +74,7 @@ router.get('/:request/:identifier', function(req, res) {
 
         mysql.query("SELECT a.*, unix_timestamp(a.starttime) as starttime_s, \
          unix_timestamp(a.stoptime) as stoptime_s, \
-              b.firstname FROM jlgeorge.work_instance a\
+              b.firstname FROM jlgeorge_test.work_instance a\
               JOIN employee b\
               ON b.idemployee = a.employee_idemployee\
               WHERE job_idjob = ?\

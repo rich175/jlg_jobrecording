@@ -30,7 +30,7 @@
                     </thead>
                     <tbody style="font-size:11px;">
                         <tr ng-repeat="x in jobFound.work">
-                            <td>{{x.date}}</td>
+                            <td>{{x.date2 | date : 'dd-MMM-yyyy ' }}</td>
                             <td>{{x.starttime}}</td>
                             <td>{{x.duration}}</td>
 

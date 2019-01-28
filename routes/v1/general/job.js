@@ -40,9 +40,10 @@ router.get('/', function(req, res) {
                a.finished as Finished,\
                a.invoiced as Invoiced,\
                a.idjob as DB_ID, \
+               a.priority as Priority, \
                b.name as Customer,\
                IF(c.stoptime IS NULL, 'Not Started', c.stoptime) as Last_Worked\
-               FROM jlgeorge.job a \
+               FROM jlgeorge_test.job a \
                JOIN job_status st \
                ON st.idjob_status = a.job_status_idjob_status \
                JOIN customer b \
@@ -101,9 +102,10 @@ router.get('/:job_number', function(req, res) {
                a.finished as Finished,\
                a.invoiced as Invoiced,\
                a.idjob as DB_ID, \
+               a.priority as Priority, \
                b.name as Customer,\
                IF(c.stoptime IS NULL, 'Not Started', c.stoptime) as Last_Worked\
-               FROM jlgeorge.job a \
+               FROM jlgeorge_test.job a \
                JOIN job_status st \
                ON st.idjob_status = a.job_status_idjob_status \
                JOIN customer b \

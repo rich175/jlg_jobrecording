@@ -8,6 +8,7 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', function(req, res) {
+  logger.debug('******************************************************');
   userModel.getUsers(function(err, data) {
     if (err) {
       res.json({error: 'User Already Exists'});

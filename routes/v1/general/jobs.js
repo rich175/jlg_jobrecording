@@ -22,7 +22,11 @@ router.get('/:status', function(req, res) {
     //find the User's company ID
     if (req.params.status === "5" || req.params.status === "6") {
         userModel.getUserData(_email, null, getAllJobTypes);
-    } else {
+    } else if(req.params.status === "7" ) {
+        userModel.getUserData(_email, null, getAllNonPriority);
+    }else if(req.params.status === "8" ) {
+        userModel.getUserData(_email, null, getAllPriority);
+    }else {
         userModel.getUserData(_email, null, getSomeJobTypes);
     }
 
@@ -41,13 +45,14 @@ router.get('/:status', function(req, res) {
                  a.creation_date as Creation_Date,\
                  a.finished as Finished,\
                  a.invoiced as Invoiced,\
+                  a.priority as Priority, \
                  b.idcustomer as Customer_dbid,\
                  b.name as Customer,\
                  a.idjob as DBID, \
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge.job a \
+                 FROM jlgeorge_test.job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \
@@ -111,10 +116,11 @@ router.get('/:status', function(req, res) {
                  b.idcustomer as Customer_dbid,\
                  b.name as Customer,\
                  a.idjob as DBID, \
+                  a.priority as Priority, \
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge.job a \
+                 FROM jlgeorge_test.job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \
@@ -161,6 +167,120 @@ router.get('/:status', function(req, res) {
         })
 
     }
+    function getAllNonPriority(err, user) { //logger.debug(user);
+
+
+        var sqlQuery = "SELECT a.machine as Machine,\
+                 a.tacho as Tacho,\
+                 a.site as Site,\
+                 a.description as Description,\
+                 a.order_number as OrderNumber,\
+                 a.id_number as ID_Number,\
+                 a.jlg_jobnumber as Job_Number,\
+                 a.creation_date as Creation_Date,\
+                 a.finished as Finished,\
+                 a.invoiced as Invoiced,\
+                 b.idcustomer as Customer_dbid,\
+                 b.name as Customer,\
+                 a.idjob as DBID, \
+                  a.priority as Priority, \
+                 js.description as Status, \
+                 a.job_status_idjob_status as StatusID, \
+                 IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
+                 FROM jlgeorge_test.job a \
+                 JOIN customer b \
+                 ON b.idcustomer = a.customer_idcustomer\
+                 JOIN job_status js \
+                 ON js.idjob_status = a.job_status_idjob_status\
+                 LEFT JOIN (SELECT * FROM (SELECT stoptime, job_idjob FROM work_instance ORDER BY stoptime DESC) as temp GROUP BY job_idjob) as c\
+                 ON c.job_idjob = a.idjob \
+                WHERE (job_status_idjob_status = 1 OR job_status_idjob_status = 2) AND a.priority = 0;";
+
+        mysql.query(sqlQuery, function(err2, rows) {
+
+            if (!err2) {
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i]['Last_Worked']) {
+                        try {
+                            var tempTime = rows[i]['Last_Worked'];
+                            //  logger.debug(tempTime);
+                            var tempTime2 = tempTime.toUTCString();
+                            //  logger.debug(tempTime2);
+                            rows[i]['Last_Worked'] = tempTime2;
+                        } catch (err) {
+
+                        }
+                    } else {
+                        rows[i]['Last_Worked'] = "No Work Recorded";
+                    }
+                    if (rows[i]['description']) {
+                        rows[i]['description'] = rows[i]['description'].replace(/(\r\n|\n|\r|\t)/gm, "");
+                    }
+                }
+                res.json(rows);
+            } else {
+                logger.debug('error:', err2);
+                res.status(500).send(err);
+            }
+        })
+    }
+    function getAllPriority(err, user) { //logger.debug(user);
+
+
+        var sqlQuery = "SELECT a.machine as Machine,\
+                 a.tacho as Tacho,\
+                 a.site as Site,\
+                 a.description as Description,\
+                 a.order_number as OrderNumber,\
+                 a.id_number as ID_Number,\
+                 a.jlg_jobnumber as Job_Number,\
+                 a.creation_date as Creation_Date,\
+                 a.finished as Finished,\
+                 a.invoiced as Invoiced,\
+                 b.idcustomer as Customer_dbid,\
+                 b.name as Customer,\
+                 a.idjob as DBID, \
+                  a.priority as Priority, \
+                 js.description as Status, \
+                 a.job_status_idjob_status as StatusID, \
+                 IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
+                 FROM jlgeorge_test.job a \
+                 JOIN customer b \
+                 ON b.idcustomer = a.customer_idcustomer\
+                 JOIN job_status js \
+                 ON js.idjob_status = a.job_status_idjob_status\
+                 LEFT JOIN (SELECT * FROM (SELECT stoptime, job_idjob FROM work_instance ORDER BY stoptime DESC) as temp GROUP BY job_idjob) as c\
+                 ON c.job_idjob = a.idjob \
+                WHERE (job_status_idjob_status = 1 OR job_status_idjob_status = 2) AND a.priority = 1;";
+
+        mysql.query(sqlQuery, function(err2, rows) {
+
+            if (!err2) {
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i]['Last_Worked']) {
+                        try {
+                            var tempTime = rows[i]['Last_Worked'];
+                            //  logger.debug(tempTime);
+                            var tempTime2 = tempTime.toUTCString();
+                            //  logger.debug(tempTime2);
+                            rows[i]['Last_Worked'] = tempTime2;
+                        } catch (err) {
+
+                        }
+                    } else {
+                        rows[i]['Last_Worked'] = "No Work Recorded";
+                    }
+                    if (rows[i]['description']) {
+                        rows[i]['description'] = rows[i]['description'].replace(/(\r\n|\n|\r|\t)/gm, "");
+                    }
+                }
+                res.json(rows);
+            } else {
+                logger.debug('error:', err2);
+                res.status(500).send(err);
+            }
+        })
+    }
 });
 router.get('/:status/:customers', function(req, res) {
 
@@ -186,13 +306,14 @@ router.get('/:status/:customers', function(req, res) {
                  a.creation_date as Creation_Date,\
                  a.finished as Finished,\
                  a.invoiced as Invoiced,\
+                  a.priority as Priority, \
                  b.idcustomer as Customer_dbid,\
                  b.name as Customer,\
                  a.idjob as DBID, \
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge.job a \
+                 FROM jlgeorge_test.job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \
@@ -322,13 +443,14 @@ router.post('/', function(req, res) {
                  a.creation_date as Creation_Date,\
                  a.finished as Finished,\
                  a.invoiced as Invoiced,\
+                  a.priority as Priority, \
                  b.idcustomer as Customer_dbid,\
                  b.name as Customer,\
                  a.idjob as DBID, \
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge.job a \
+                 FROM jlgeorge_test.job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \

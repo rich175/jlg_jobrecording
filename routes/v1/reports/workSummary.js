@@ -29,7 +29,7 @@ router.get('/:employeeID/:start/:end', function(req, res) {
             SELECT \
             DATE_FORMAT(date(wrk.stoptime), '%Y-%c-%e') AS date, \
             TIMESTAMPDIFF(MINUTE, wrk.starttime, wrk.stoptime) as duration \
-            FROM jlgeorge.work_instance wrk\
+            FROM jlgeorge_test.work_instance wrk\
             WHERE wrk.employee_idemployee = ? \
             AND wrk.starttime > ? \
             AND wrk.starttime < ? \

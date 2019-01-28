@@ -17,16 +17,17 @@ router.get('/:active', function(req, res) {
 
     var _email = res.locals.userData.email;
     //find the User's company ID
+    logger.debug('HERE');
     userModel.getUserData(_email, null, getData);
 
     //Get the Job sheet for that particular Number
     function getData(err, user) {
-        //logger.debug(user);
+
 
         var array = [req.params.active];
 
         var query = "SELECT id, firstName, lastName, active \
-            FROM jlgeorge.users \
+            FROM jlgeorge_test.users \
             WHERE active = ?";
 
         mysql.query(query, array, function(err2, rows) {
@@ -49,10 +50,10 @@ router.get('', function(req, res) {
 
   //Get the Job sheet for that particular Number
   function getData(err, user) {
-      //logger.debug(user);      
+      //logger.debug(user);
 
       var query = "SELECT id, firstName, lastName, active \
-          FROM jlgeorge.users";
+          FROM jlgeorge_test.users";
 
       mysql.query(query, function(err2, rows) {
           if (!err2) {

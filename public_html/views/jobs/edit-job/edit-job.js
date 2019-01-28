@@ -1,8 +1,13 @@
 (function() {
     var app;
     app = angular.module('edit-job', ['jlg_services'])
-        .controller('edit-job-cntrl', ['$scope', '$window','customer', 'job',
-            function($scope, $window, customer, job) {
+        .controller('edit-job-cntrl', ['$scope', '$window', 'customer', 'job', '$stateParams', '$q',
+            function($scope, $window, customer, job, $stateParams, $q) {
+
+
+                var jn = $stateParams.jn;
+
+
                 $scope.saving = false;
                 $scope.selectedJob = {};
                 $scope.foundJob = {
@@ -24,23 +29,31 @@
                 $scope.jobList = [];
 
                 $scope.getCustomers = function() {
+                    var deferred = $q.defer();
                     customer.allCustomers().then(function(response) {
                         $scope.customers = response.data;
-
-                    })
+                        deferred.resolve();
+                    });
+                    return deferred.promise;
                 };
 
                 $scope.getStatusOptions = function() {
+                    var deferred = $q.defer();
                     job.statusOptions().then(function(data) {
                         $scope.statusOptions = data;
-
-                    })
+                        deferred.resolve();
+                    });
+                    return deferred.promise;
                 };
 
                 $scope.getJobList = function() {
+                    var deferred = $q.defer();
                     job.jobList().then(function(data) {
                         $scope.jobList = data;
+                        deferred.resolve();
+
                     });
+                    return deferred.promise;
                 };
 
                 $scope.jobSelected = function(_job) {
@@ -58,7 +71,6 @@
                         }
                     }
 
-
                     $scope.foundJob.job_number = _job.Job_Number;
                     $scope.foundJob.db_id = _job.DB_ID;
                     $scope.foundJob.description = _job.Description;
@@ -68,14 +80,29 @@
                     $scope.foundJob.serial = _job.ID_Number;
                     $scope.foundJob.mileage = _job.Mileage;
                     $scope.foundJob.orderNumber = _job.OrderNumber;
-
-
-
                 }
 
-                $scope.getJobList();
-                $scope.getCustomers();
-                $scope.getStatusOptions();
+                $scope.getJobList().then(function() {
+                    $scope.getCustomers().then(function() {
+                        $scope.getStatusOptions().then(function() {
+                            if (jn) {
+                                var _matchedJob;
+
+                                for (let i = 0; i < $scope.jobList.length; i++) {
+                                    if (jn === ''+$scope.jobList[i].Job_Number) {
+                                        _matchedJob = $scope.jobList[i];
+                                    }
+                                };
+                                $scope.selectedJob=_matchedJob;
+                                $scope.jobSelected(_matchedJob);
+                            }
+                        })
+                    })
+                });
+
+
+
+
 
                 $scope.errorMessage = '';
                 $scope.saveChanges = function() {

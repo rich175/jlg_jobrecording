@@ -34,9 +34,10 @@ router.get('/', function(req, res) {
                    a.creation_date as Creation_Date,\
                    a.finished as Finished,\
                    a.invoiced as Invoiced,\
+                    a.priority as Priority, \
                    b.name as Customer,\
                    c.stoptime as Last_Worked\
-                   FROM jlgeorge.job a \
+                   FROM jlgeorge_test.job a \
                    JOIN customer b \
                    ON b.idcustomer = a.customer_idcustomer\
                    JOIN (SELECT * FROM (SELECT stoptime, job_idjob FROM work_instance ORDER BY stoptime DESC) as temp GROUP BY job_idjob) as c\
