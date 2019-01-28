@@ -27,7 +27,7 @@ router.get('/:active', function(req, res) {
         var array = [req.params.active];
 
         var query = "SELECT id, firstName, lastName, active \
-            FROM jlgeorge_test.users \
+            FROM users \
             WHERE active = ?";
 
         mysql.query(query, array, function(err2, rows) {
@@ -53,7 +53,7 @@ router.get('', function(req, res) {
       //logger.debug(user);
 
       var query = "SELECT id, firstName, lastName, active \
-          FROM jlgeorge_test.users";
+          FROM users";
 
       mysql.query(query, function(err2, rows) {
           if (!err2) {

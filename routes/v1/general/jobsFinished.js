@@ -44,7 +44,7 @@ router.get('/:invoiced', function(req, res) {
                    a.invoiced as Invoiced,\
                    b.name as Customer,\
                    c.stoptime as Last_Worked\
-                   FROM jlgeorge_test.job a \
+                   FROM job a \
                    JOIN customer b \
                    ON b.idcustomer = a.customer_idcustomer\
                    LEFT JOIN (SELECT * FROM (SELECT stoptime, job_idjob FROM work_instance ORDER BY stoptime DESC) as temp GROUP BY job_idjob) as c\

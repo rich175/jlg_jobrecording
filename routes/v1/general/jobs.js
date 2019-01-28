@@ -52,7 +52,7 @@ router.get('/:status', function(req, res) {
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge_test.job a \
+                 FROM job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \
@@ -120,7 +120,7 @@ router.get('/:status', function(req, res) {
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge_test.job a \
+                 FROM job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \
@@ -187,7 +187,7 @@ router.get('/:status', function(req, res) {
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge_test.job a \
+                 FROM job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \
@@ -244,7 +244,7 @@ router.get('/:status', function(req, res) {
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge_test.job a \
+                 FROM job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \
@@ -313,7 +313,7 @@ router.get('/:status/:customers', function(req, res) {
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge_test.job a \
+                 FROM job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \
@@ -450,7 +450,7 @@ router.post('/', function(req, res) {
                  js.description as Status, \
                  a.job_status_idjob_status as StatusID, \
                  IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM jlgeorge_test.job a \
+                 FROM job a \
                  JOIN customer b \
                  ON b.idcustomer = a.customer_idcustomer\
                  JOIN job_status js \
