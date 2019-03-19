@@ -149,6 +149,21 @@
                     $scope.getRelevantJobs(5);
                     //}
                 }, false);
+                $scope.$watch('options.companiesSelectedAllA', function(newValue, oldValue) {
+                    //if (newValue.length === 0) {
+                    //    $scope.getAllJobs();
+                    //} else {
+                    $scope.getRelevantJobs(6);
+                    //}
+                }, false);
+                $scope.$watch('options.companiesSelectedAllAP', function(newValue, oldValue) {
+                    //if (newValue.length === 0) {
+                    //    $scope.getAllJobs();
+                    //} else {
+                    $scope.getRelevantJobs(7);
+                    //}
+                }, false);
+
 
                 $scope.exportJobSheet = function(job) {
                     var url = $state.href('index.jobSheet', {
@@ -242,6 +257,38 @@
                             }
                         }
                         $scope.jobsAll = jobs;
+                    } else if (_state === 6) {
+                        if ($scope.options.companiesSelectedAllA.length === 0) {
+                            jobs = $scope.jobsAllANotFiltered;
+                        } else {
+                            if ($scope.jobsAllANotFiltered) {
+                                for (var i = 0; i < $scope.jobsAllANotFiltered.length; i++) {
+                                    var _customer = $scope.jobsAllANotFiltered[i].Customer;
+                                    var _customerMatch = false;
+                                    var _customerMatch = $scope.isMatched(_customer, $scope.options.companiesSelectedAllA);
+                                    if (_customerMatch) {
+                                        jobs.push($scope.jobsAllANotFiltered[i]);
+                                    }
+                                };
+                            }
+                        }
+                        $scope.jobsAllA = jobs;
+                    } else if (_state === 7) {
+                        if ($scope.options.companiesSelectedAllAP.length === 0) {
+                            jobs = $scope.jobsAllAPNotFiltered;
+                        } else {
+                            if ($scope.jobsAllAPNotFiltered) {
+                                for (var i = 0; i < $scope.jobsAllAPNotFiltered.length; i++) {
+                                    var _customer = $scope.jobsAllAPNotFiltered[i].Customer;
+                                    var _customerMatch = false;
+                                    var _customerMatch = $scope.isMatched(_customer, $scope.options.companiesSelectedAllAP);
+                                    if (_customerMatch) {
+                                        jobs.push($scope.jobsAllAPNotFiltered[i]);
+                                    }
+                                };
+                            }
+                        }
+                        $scope.jobsAllAP = jobs;
                     }
                 }
 
