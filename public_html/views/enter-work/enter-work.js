@@ -72,12 +72,14 @@
 
                 //function to check if the work time entered is valid i.e. doesn't clash and makes sense
                 $scope.workTimeChange = function() {
-                    $scope.isValid = addWork.validateTime($scope.calObjects.eventSources[0], $scope.thisWork.start.getTime(), $scope.thisWork.end.getTime());
+					var y2 = $scope.selectedDate.start.year();
+					var m2 = $scope.selectedDate.start.month();
+					var d2 = $scope.selectedDate.start.date();
 
+					const _startTime = new Date(y2, m2, d2, $scope.thisWork.start.getHours(), $scope.thisWork.start.getMinutes());
+					const _endTime = new Date(y2, m2, d2, $scope.thisWork.end.getHours(), $scope.thisWork.end.getMinutes());
+                    $scope.isValid = addWork.validateTime($scope.calObjects.eventSources[0], _startTime, _endTime);
                 };
-
-
-
 
                 $scope.tempMaterial = {
                     material: {
@@ -212,8 +214,8 @@
 
                         var _event = {
                             title: '****WILL SAVE HERE****',
-                            start: $scope.thisWork.start,
-                            end: $scope.thisWork.end,
+                            start: tempTimeStart,
+                            end: tempTimeEnd,
                             className: ['temp']
                         };
                         $scope.calObjects.eventSources[0].push(_event);
@@ -585,10 +587,6 @@
                     $scope.materialStyle = $scope.styleChange($scope.materialsChanged);
                 }
 
-
-                $scope.workTimeChange = function() {
-                    $scope.isValid = $scope.x.validateTime($scope.events, $scope.newWork.work.StartTime, $scope.newWork.work.EndTime);
-                }
                 $scope.workTimeChange();
                 $scope.ok = function() {
                     var reply = {

@@ -156,7 +156,8 @@
                     $scope.getRelevantJobs(6);
                     //}
                 }, false);
-                 $scope.$watch('options.companiesSelectedAllAP', function(newValue, oldValue) {
+                $scope.$watch('options.companiesSelectedAllAP', function(newValue, oldValue) {
+
                     //if (newValue.length === 0) {
                     //    $scope.getAllJobs();
                     //} else {
