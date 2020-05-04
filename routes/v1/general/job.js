@@ -57,7 +57,7 @@ router.get('/', function(req, res) {
 
                     if (rows[i]['Last_Worked'] != "Not Started") {
                         var tempTime = new Date(rows[i]['Last_Worked']);
-                        logger.debug(tempTime);
+                        //logger.debug(tempTime);
                         var tempTime2 = tempTime.toUTCString();
                         //  logger.debug(tempTime2);
                         rows[i]['Last_Worked'] = tempTime2;

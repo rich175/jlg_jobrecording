@@ -16,17 +16,17 @@ router.use(function(req, res, next) {
 router.get('/:status', function(req, res) {
 
     //job status 1 = in prog, 2 = quarr, 3 = finished, 4 = invoiced, 5= all, 6=all-invoiced
-      logger.info("Getting a list of jobs, status: " + req.params.status);
+    logger.info("Getting a list of jobs, status: " + req.params.status);
 
     var _email = res.locals.userData.email;
     //find the User's company ID
     if (req.params.status === "5" || req.params.status === "6") {
         userModel.getUserData(_email, null, getAllJobTypes);
-    } else if(req.params.status === "7" ) {
+    } else if (req.params.status === "7") {
         userModel.getUserData(_email, null, getAllNonPriority);
-    }else if(req.params.status === "8" ) {
+    } else if (req.params.status === "8") {
         userModel.getUserData(_email, null, getAllPriority);
-    }else {
+    } else {
         userModel.getUserData(_email, null, getSomeJobTypes);
     }
 
@@ -58,8 +58,8 @@ router.get('/:status', function(req, res) {
                  JOIN job_status js \
                  ON js.idjob_status = a.job_status_idjob_status\
                  LEFT JOIN (SELECT * FROM (SELECT stoptime, job_idjob FROM work_instance ORDER BY stoptime DESC) as temp GROUP BY job_idjob) as c\
-                 ON c.job_idjob = a.idjob\
-                  WHERE job_status_idjob_status = ?";
+                 ON c.job_idjob = a.idjob \
+                 WHERE job_status_idjob_status = ?";
 
 
 
@@ -68,7 +68,6 @@ router.get('/:status', function(req, res) {
             if (!err2) {
                 for (var i = 0; i < rows.length; i++) {
                     if (rows[i]['Last_Worked']) {
-
                         try {
                             var tempTime = rows[i]['Last_Worked'];
                             //  logger.debug(tempTime);
@@ -79,25 +78,20 @@ router.get('/:status', function(req, res) {
                         } catch (err) {
 
                         }
-
-
                         //logger.debug(rows[i]['Last_Worked']);
                     } else {
                         rows[i]['Last_Worked'] = "No Work Recorded";
                     }
-
                     if (rows[i]['description']) {
                         rows[i]['description'] = rows[i]['description'].replace(/(\r\n|\n|\r|\t)/gm, "");
                     }
                 }
                 res.json(rows);
-
             } else {
                 logger.debug('error:', err2);
                 res.status(500).send(err);
             }
         })
-
     }
 
     function getAllJobTypes(err, user) { //logger.debug(user);
@@ -167,6 +161,7 @@ router.get('/:status', function(req, res) {
         })
 
     }
+
     function getAllNonPriority(err, user) { //logger.debug(user);
 
 
@@ -224,6 +219,7 @@ router.get('/:status', function(req, res) {
             }
         })
     }
+
     function getAllPriority(err, user) { //logger.debug(user);
 
 
