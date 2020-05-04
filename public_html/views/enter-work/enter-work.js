@@ -586,7 +586,9 @@
                     }
                     $scope.materialStyle = $scope.styleChange($scope.materialsChanged);
                 }
-
+                $scope.workTimeChange = function() {
+                    $scope.isValid = $scope.x.validateTime($scope.events, $scope.newWork.work.StartTime, $scope.newWork.work.EndTime);
+                }
                 $scope.workTimeChange();
                 $scope.ok = function() {
                     var reply = {
