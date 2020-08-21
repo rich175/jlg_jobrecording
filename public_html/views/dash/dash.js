@@ -245,7 +245,7 @@
                                             _timeSick = _timeSick.toFixed(1);
                                         } else if ('' + jobWork.jlg_jobnumber === '888') {
                                             _timeHoliday = (jobWork.duration / 60);
-                                            _timeHoliday = _t_timeHolidayime.toFixed(1);
+                                            _timeHoliday = _timeHoliday.toFixed(1);
                                         } else {
                                             _timeNormal = (jobWork.duration / 60);
                                             _timeNormal = _timeNormal.toFixed(1);
@@ -285,7 +285,7 @@
                                 if ('' + dayOfWork.jlg_jobnumber !== '999' && '' + dayOfWork.jlg_jobnumber !== '888') {
                                     _total += dayOfWork.duration;
                                       _gTotal += dayOfWork.duration;
-                                } else if ('' + dayOfWork.jlg_jobnumber === '999' || '' + dayOfWork.jlg_jobnumber !== '888') {
+                                } else if ('' + dayOfWork.jlg_jobnumber === '999' || '' + dayOfWork.jlg_jobnumber === '888') {
                                     _gTotal += dayOfWork.duration;
                                 }
                             }
