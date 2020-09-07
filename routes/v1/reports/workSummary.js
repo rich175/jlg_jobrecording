@@ -25,16 +25,20 @@ router.get('/:employeeID/:start/:end', function(req, res) {
 
         var array = [req.params.employeeID, req.params.start,  req.params.end];
 
-        var query = "SELECT tbl.date, SUM(tbl.duration) as duration FROM ( \
+        var query = "SELECT tbl.date, SUM(tbl.duration) as duration,tbl.jlg_jobnumber, tbl.userID FROM ( \
             SELECT \
             DATE_FORMAT(date(wrk.stoptime), '%Y-%c-%e') AS date, \
-            TIMESTAMPDIFF(MINUTE, wrk.starttime, wrk.stoptime) as duration \
+            TIMESTAMPDIFF(MINUTE, wrk.starttime, wrk.stoptime) as duration, \
+            wrk.employee_idemployee as userID, \
+            jb.jlg_jobnumber \
             FROM work_instance wrk\
+            LEFT JOIN job jb \
+            ON jb.idjob = wrk.job_idjob \
             WHERE wrk.employee_idemployee = ? \
             AND wrk.starttime > ? \
             AND wrk.starttime < ? \
             ORDER BY date(wrk.stoptime) DESC) tbl \
-            GROUP BY tbl.date";
+            GROUP BY tbl.date, tbl.jlg_jobnumber";
 
         mysql.query(query, array, function(err2, rows) {
             if (!err2) {
