@@ -254,9 +254,9 @@
 
                                 }
                             }
-                            $scope.summarySeries[j].data[0].push(_timeNormal);
-                            $scope.summarySeries[j].data[1].push(_timeSick);
-                            $scope.summarySeries[j].data[2].push(_timeHoliday);
+                            $scope.summarySeries[j].data[0].push(_timeNormal.toFixed(1));
+                            $scope.summarySeries[j].data[1].push(_timeSick.toFixed(1));
+                            $scope.summarySeries[j].data[2].push(_timeHoliday.toFixed(1));
                         }
                     }
 
