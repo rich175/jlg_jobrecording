@@ -39,9 +39,9 @@
                 <div ng-if="usr.totalWork > 0 && usr.firstName == currentUser.email">
                   <div class="col-lg-5">
                     <h2>{{usr.firstName}} ---- {{usr.totalWork}}/{{usr.grandTotalWork}}hrs</h2>
-                    <canvas id="line" class="chart chart-bar" chart-data="summarySeries[$index].data" chart-labels="summaryLabels" chart-series="summarySeries[$index].name" chart-options="summaryMonthOptions"  chart-colors="colors">
+                    <canvas id="line" class="chart chart-bar" chart-data="summarySeries[$index].data" chart-labels="summaryLabels" chart-series="['Work', 'Sick', 'Holiday']" chart-options="summaryMonthOptions"  chart-colors="colors">
 </canvas>
-  {{summarySeries[$index].data}}
+
                   </div>
                 </div>
               </div>

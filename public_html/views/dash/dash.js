@@ -241,14 +241,14 @@
                                 if ($scope.summaryLabels[i] === _dateOfEntry) {
                                     data[j].work[k].entries.forEach((jobWork, i) => {
                                         if ('' + jobWork.jlg_jobnumber === '999') {
-                                            _timeSick = (jobWork.duration / 60);
-                                            _timeSick = _timeSick.toFixed(1);
+                                            var ts_hrs = (jobWork.duration / 60);
+                                            _timeSick += parseFloat(ts_hrs.toFixed(1));
                                         } else if ('' + jobWork.jlg_jobnumber === '888') {
-                                            _timeHoliday = (jobWork.duration / 60);
-                                            _timeHoliday = _timeHoliday.toFixed(1);
+                                            var th_hrs = (jobWork.duration / 60);
+                                            _timeHoliday += parseFloat(th_hrs.toFixed(1));
                                         } else {
-                                            _timeNormal = (jobWork.duration / 60);
-                                            _timeNormal = _timeNormal.toFixed(1);
+                                            var tn_hrs = (jobWork.duration / 60);
+                                            _timeNormal += parseFloat(tn_hrs.toFixed(1));
                                         }
                                     });
 
