@@ -234,12 +234,17 @@
                     $scope.progress(4);
                     $scope.thisWork.description = $scope.thisWork.description.replace(/\n\r?/g, '<br/>');
                     //$scope.thisWork.materialUsed = $scope.thisWork.materialUsed.replace(/\n\r?/g, '<br/>');
+                    var y2 = $scope.selectedDate.start.year();
+                    var m2 = $scope.selectedDate.start.month();
+                    var d2 = $scope.selectedDate.start.date();
 
+                    const _startTime = new Date(y2, m2, d2, $scope.thisWork.start.getHours(), $scope.thisWork.start.getMinutes());
+                    const _endTime = new Date(y2, m2, d2, $scope.thisWork.end.getHours(), $scope.thisWork.end.getMinutes());
                     var _toDB = {
                         db_jobid: $scope.thisWork.job.DBID,
                         db_empid: 3,
-                        start: $scope.convertToMySQL($scope.thisWork.start),
-                        end: $scope.convertToMySQL($scope.thisWork.end),
+                        start: $scope.convertToMySQL(_startTime),
+                        end: $scope.convertToMySQL(_endTime),
                         comments: $scope.thisWork.description,
                         materials: $scope.thisWork.materialAddedString,
                     };
