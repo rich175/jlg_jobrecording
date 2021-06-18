@@ -8,12 +8,12 @@ var mysql = require(__base + '/utils/sqlUserPool2').pool;
 var userModel = require(__base + '/models/users');
 var jwt = require('jsonwebtoken');
 
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
     //logger.debug('Company js is working');
     next();
 });
 
-router.get('/:status', function(req, res) {
+router.get('/:status', function (req, res) {
 
     //job status 1 = in prog, 2 = quarr, 3 = finished, 4 = invoiced, 5= all, 6=all-invoiced
     logger.info("Getting a list of jobs, status: " + req.params.status);
@@ -64,7 +64,7 @@ router.get('/:status', function(req, res) {
 
 
 
-        mysql.query(sqlQuery, req.params.status, function(err2, rows) {
+        mysql.query(sqlQuery, req.params.status, function (err2, rows) {
             if (!err2) {
                 for (var i = 0; i < rows.length; i++) {
                     if (rows[i]['Last_Worked']) {
@@ -85,6 +85,13 @@ router.get('/:status', function(req, res) {
                     if (rows[i]['description']) {
                         rows[i]['description'] = rows[i]['description'].replace(/(\r\n|\n|\r|\t)/gm, "");
                     }
+
+                    let jsDate= rows[i]['Creation_Date'];
+                    let year = jsDate.getFullYear();
+                    let month = ('0' + (jsDate.getMonth() + 1)).slice(-2);
+                    let day = ('0' + jsDate.getDate()).slice(-2);
+                    rows[i]['Created_Date_HR'] = `${year}-${month}-${day}`;
+
                 }
                 res.json(rows);
             } else {
@@ -125,7 +132,7 @@ router.get('/:status', function(req, res) {
             sqlQuery = sqlQuery + " WHERE job_status_idjob_status != 4";
         }
 
-        mysql.query(sqlQuery, function(err2, rows) {
+        mysql.query(sqlQuery, function (err2, rows) {
 
             if (!err2) {
                 for (var i = 0; i < rows.length; i++) {
@@ -151,6 +158,12 @@ router.get('/:status', function(req, res) {
                     if (rows[i]['description']) {
                         rows[i]['description'] = rows[i]['description'].replace(/(\r\n|\n|\r|\t)/gm, "");
                     }
+                    let jsDate= rows[i]['Creation_Date'];
+                    let year = jsDate.getFullYear();
+                    let month = ('0' + (jsDate.getMonth() + 1)).slice(-2);
+                    let day = ('0' + jsDate.getDate()).slice(-2);
+                    rows[i]['Created_Date_HR'] = `${year}-${month}-${day}`;
+
                 }
                 res.json(rows);
 
@@ -191,7 +204,7 @@ router.get('/:status', function(req, res) {
                  ON c.job_idjob = a.idjob \
                 WHERE (job_status_idjob_status = 1 OR job_status_idjob_status = 2) AND a.priority = 0;";
 
-        mysql.query(sqlQuery, function(err2, rows) {
+        mysql.query(sqlQuery, function (err2, rows) {
 
             if (!err2) {
                 for (var i = 0; i < rows.length; i++) {
@@ -211,6 +224,12 @@ router.get('/:status', function(req, res) {
                     if (rows[i]['description']) {
                         rows[i]['description'] = rows[i]['description'].replace(/(\r\n|\n|\r|\t)/gm, "");
                     }
+                    let jsDate= rows[i]['Creation_Date'];
+                    let year = jsDate.getFullYear();
+                    let month = ('0' + (jsDate.getMonth() + 1)).slice(-2);
+                    let day = ('0' + jsDate.getDate()).slice(-2);
+                    rows[i]['Created_Date_HR'] = `${year}-${month}-${day}`;
+
                 }
                 res.json(rows);
             } else {
@@ -249,7 +268,7 @@ router.get('/:status', function(req, res) {
                  ON c.job_idjob = a.idjob \
                 WHERE (job_status_idjob_status = 1 OR job_status_idjob_status = 2) AND a.priority = 1;";
 
-        mysql.query(sqlQuery, function(err2, rows) {
+        mysql.query(sqlQuery, function (err2, rows) {
 
             if (!err2) {
                 for (var i = 0; i < rows.length; i++) {
@@ -269,6 +288,12 @@ router.get('/:status', function(req, res) {
                     if (rows[i]['description']) {
                         rows[i]['description'] = rows[i]['description'].replace(/(\r\n|\n|\r|\t)/gm, "");
                     }
+                    let jsDate= rows[i]['Creation_Date'];
+                    let year = jsDate.getFullYear();
+                    let month = ('0' + (jsDate.getMonth() + 1)).slice(-2);
+                    let day = ('0' + jsDate.getDate()).slice(-2);
+                    rows[i]['Created_Date_HR'] = `${year}-${month}-${day}`;
+
                 }
                 res.json(rows);
             } else {
@@ -278,7 +303,7 @@ router.get('/:status', function(req, res) {
         })
     }
 });
-router.get('/:status/:customers', function(req, res) {
+router.get('/:status/:customers', function (req, res) {
 
     //job status 1 = in prog, 2 = quarr, 3 = finished, 4 = invoiced
 
@@ -322,7 +347,7 @@ router.get('/:status/:customers', function(req, res) {
             sqlQuery = sqlQuery + " WHERE job_status_idjob_status = ?";
         }
 
-        mysql.query(sqlQuery, req.params.status, function(err2, rows) {
+        mysql.query(sqlQuery, req.params.status, function (err2, rows) {
             if (!err2) {
                 for (var i = 0; i < rows.length; i++) {
                     if (rows[i]['Last_Worked']) {
@@ -347,6 +372,12 @@ router.get('/:status/:customers', function(req, res) {
                     if (rows[i]['description']) {
                         rows[i]['description'] = rows[i]['description'].replace(/(\r\n|\n|\r|\t)/gm, "");
                     }
+                    let jsDate= rows[i]['Creation_Date'];
+                    let year = jsDate.getFullYear();
+                    let month = ('0' + (jsDate.getMonth() + 1)).slice(-2);
+                    let day = ('0' + jsDate.getDate()).slice(-2);
+                    rows[i]['Created_Date_HR'] = `${year}-${month}-${day}`;
+
                 }
                 res.json(rows);
 
@@ -357,7 +388,7 @@ router.get('/:status/:customers', function(req, res) {
         })
     }
 });
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
     function getData() {
         //get individual jobs notes
 
@@ -372,7 +403,7 @@ router.get('/', function(req, res) {
               JOIN job_status js \
               ON js.idjob_status = jb.job_status_idjob_status";
 
-        mysql.query(sqlQuery, function(err2, rows) {
+        mysql.query(sqlQuery, function (err2, rows) {
             if (!err2) {
                 res.json(rows);
             } else {
@@ -384,10 +415,10 @@ router.get('/', function(req, res) {
     getData();
 
 });
-router.delete('/', function(req, res) {
+router.delete('/', function (req, res) {
 
 });
-router.put('/', function(req, res) {
+router.put('/', function (req, res) {
     //{update: {inUse: 0 }, id: 1};
     var _data = req.body.update;
     var _id = req.body.id;
@@ -397,7 +428,7 @@ router.put('/', function(req, res) {
 
         var sqlQuery = "UPDATE job SET ? WHERE idjob = ?";
 
-        mysql.query(sqlQuery, [_data, _id], function(err2, rows) {
+        mysql.query(sqlQuery, [_data, _id], function (err2, rows) {
             if (!err2) {
 
                 res.json({
@@ -415,7 +446,7 @@ router.put('/', function(req, res) {
 
 });
 
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
     var _jobNumbers = req.body.jb_db_id;
 
     var _jbMySQLStatement = '';
@@ -456,7 +487,7 @@ router.post('/', function(req, res) {
                  WHERE " + _jbMySQLStatement;
 
 
-    mysql.query(sqlQuery, req.params.status, function(err2, rows) {
+    mysql.query(sqlQuery, req.params.status, function (err2, rows) {
         if (!err2) {
             for (var i = 0; i < rows.length; i++) {
                 if (rows[i]['Last_Worked']) {
@@ -481,6 +512,12 @@ router.post('/', function(req, res) {
                 if (rows[i]['description']) {
                     rows[i]['description'] = rows[i]['description'].replace(/(\r\n|\n|\r|\t)/gm, "");
                 }
+                let jsDate= rows[i]['Creation_Date'];
+                let year = jsDate.getFullYear();
+                let month = ('0' + (jsDate.getMonth() + 1)).slice(-2);
+                let day = ('0' + jsDate.getDate()).slice(-2);
+                rows[i]['Created_Date_HR'] = `${year}-${month}-${day}`;
+
             }
             res.json(rows);
 

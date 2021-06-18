@@ -70,6 +70,7 @@
                                                 <tr>
                                                     <th>Select</th>
                                                     <th>Job Number</th>
+                                                    <th>Job Created</th>
                                                     <th>Description</th>
                                                     <th>Last Worked On </th>
                                                     <th>Customer </th>
@@ -81,6 +82,7 @@
                                                 <tr ng-repeat="job in jobsInProgress">
                                                     <td><button class="btn btn-primary" ng-click="selectJob(job)">*</button></td>
                                                     <td>{{ job.Job_Number }}</td>
+                                                    <td>{{job.Created_Date_HR}}</td>
                                                     <td>{{ job.Description }}</td>
                                                     <td>{{ job.Last_Worked }}</td>
                                                     <td>{{ job.Customer }}</td>
