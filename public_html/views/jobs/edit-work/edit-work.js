@@ -1,7 +1,7 @@
 (function() {
     var app;
-    app = angular.module('edit-job', ['jlg_services'])
-        .controller('edit-job-cntrl', ['$scope', '$window', 'customer', 'job', '$stateParams', '$q',
+    app = angular.module('edit-work', ['jlg_services'])
+        .controller('edit-work-cntrl', ['$scope', '$window', 'customer', 'job', '$stateParams', '$q',
             function($scope, $window, customer, job, $stateParams, $q) {
 
 

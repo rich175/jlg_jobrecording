@@ -26,30 +26,33 @@ router.get('/', function(req, res) {
 
         //get individual br asset report
 
-        var _sql = "SELECT a.machine as Machine,\
-               a.tacho as Tacho,\
-               a.site as Site,\
-               a.description as Description,\
-               a.order_number as OrderNumber,\
-               a.id_number as ID_Number,\
-               a.jlg_jobnumber as Job_Number,\
-               a.creation_date as Creation_Date,\
-               a.`mileage_e/w` as Mileage,\
-               a.job_status_idjob_status as Status_id,\
-               st.description as Status, \
-               a.finished as Finished,\
-               a.invoiced as Invoiced,\
-               a.idjob as DB_ID, \
-               a.priority as Priority, \
-               b.name as Customer,\
-               IF(c.stoptime IS NULL, 'Not Started', c.stoptime) as Last_Worked\
-               FROM job a \
-               JOIN job_status st \
-               ON st.idjob_status = a.job_status_idjob_status \
-               JOIN customer b \
-               ON b.idcustomer = a.customer_idcustomer\
-               LEFT JOIN (SELECT * FROM (SELECT stoptime, job_idjob FROM work_instance ORDER BY stoptime DESC) as temp GROUP BY job_idjob) as c\
-               ON c.job_idjob = a.idjob";
+        var _sql = `SELECT 
+        a.machine as Machine,
+        a.tacho as Tacho,
+        a.site as Site,
+        a.description as Description,
+        a.order_number as OrderNumber,
+        a.id_number as ID_Number,
+        a.jlg_jobnumber as Job_Number,
+        a.creation_date as Creation_Date,
+        a.mileage_ew as Mileage,
+        a.job_status_idjob_status as Status_id,
+        st.description as Status, 
+        a.finished as Finished,
+        a.invoiced as Invoiced,
+        a.idjob as DB_ID, 
+        a.priority as Priority, 
+        b.name as Customer,
+        IF(c.stoptime IS NULL, 'Not Started', c.stoptime) as Last_Worked
+    FROM job a 
+    JOIN job_status st ON st.idjob_status = a.job_status_idjob_status 
+    JOIN customer b ON b.idcustomer = a.customer_idcustomer
+    LEFT JOIN (
+        SELECT MAX(stoptime) as stoptime, job_idjob 
+        FROM work_instance 
+        GROUP BY job_idjob
+    ) as c ON c.job_idjob = a.idjob
+    `;
         //logger.info(_sql);
         mysql.query(_sql, function(err2, rows) {
             if (!err2) {
@@ -96,7 +99,7 @@ router.get('/:job_number', function(req, res) {
                a.id_number as ID_Number,\
                a.jlg_jobnumber as Job_Number,\
                a.creation_date as Creation_Date,\
-               a.`mileage_e/w` as Mileage,\
+               a.`mileage_ew` as Mileage,\
                a.job_status_idjob_status as Status_id,\
                st.description as Status, \
                a.finished as Finished,\
@@ -245,7 +248,7 @@ router.post('/', function(req, res) {
 
         var sqlQuery = "INSERT INTO job \
               (`machine`,`tacho`,`site`,`description`,`order_number`,\
-                `id_number`,`mileage_e/w`,`customer_idcustomer`,`jlg_jobnumber`,`creation_date`,`job_status_idjob_status`) \
+                `id_number`,`mileage_ew`,`customer_idcustomer`,`jlg_jobnumber`,`creation_date`,`job_status_idjob_status`) \
               VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 
         var array = [req.body.machine,

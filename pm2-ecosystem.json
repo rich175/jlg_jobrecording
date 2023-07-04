@@ -1,0 +1,21 @@
+{
+  "apps" : [{
+    "name"       : "jlgeorge",
+    "script"     : "server.js",
+    "watch"       : false,
+    "ignore_watch" : ["[\\/\\\\]\\./","pids", "logs", "node_modules", "bower_components",".git",".git/index.lock",".idea"],
+    "merge_logs"  : true,
+    "cwd"         : ".",
+    "no-autorestart":true,
+    "min_uptime"  : "30s", // defaults to 1000s
+    "max_restarts"  : 30, // defaults to 15
+    "restart_delay" : 10000,
+    "max_memory_restart" : "10G",
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "env_production" : {
+      "NODE_ENV": "production"
+    }
+  }]
+}

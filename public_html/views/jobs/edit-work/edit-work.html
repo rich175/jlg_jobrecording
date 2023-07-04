@@ -1,0 +1,95 @@
+<div ng-app="edit-work" ng-controller="edit-work-cntrl as myCntrl">
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2><strong>Edit Job</strong></h2>
+            <small>Use this page to edit existing job information</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <strong></strong>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-3 offset-3">
+                        <h2>Select Job Number:</h2>
+                        <select search-contains="true" ng-if="jobList.length >0" class="form-control" chosen ng-model="selectedJob" ng-change= "jobSelected(selectedJob)" ng-options="x as x.Job_Number for x in jobList | orderBy:'Job_Number'"><option><option></select>
+                    </div>
+
+                </div>
+                </br>
+                </br>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Select Customer</label>
+                        <select search-contains="true" ng-if="customers.length >0" class="form-control" chosen ng-model="foundJob.customer" ng-options="x as x.Customer for x in customers | orderBy:'Customer'"></select>
+                    </div>
+
+                </div>
+                </br>
+                </br>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Enter Description</label>
+                        <textarea class="form-control" ng-model="foundJob.description"></textarea>
+                    </div>
+
+                </div>
+                </br>
+                </br>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Enter Tacho</label>
+                        <input class="form-control" ng-model="foundJob.tacho"></input>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Enter Site</label>
+                        <input class="form-control" ng-model="foundJob.site"></input>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Enter Machine</label>
+                        <input class="form-control" ng-model="foundJob.machine"></input>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Enter Order Number</label>
+                        <input class="form-control" ng-model="foundJob.orderNumber"></input>
+                    </div>
+
+
+                </div>
+                </br>
+                </br>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Enter Serial</label>
+                        <input class="form-control" ng-model="foundJob.serial"></input>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Enter Mileage</label>
+                        <input class="form-control" ng-model="foundJob.mileage"></input>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Enter Inital Status</label>
+                        <select ng-if="statusOptions.length >0" class="form-control" chosen ng-model="foundJob.status" ng-options="x as x.Description for x in statusOptions"></select>
+                    </div>
+
+
+                </div>
+                </br>
+                </br>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-3" style = "text-align:center">
+                        <button ng-disabled="saving" ng-click = "saveChanges()" class="btn-primary btn-lg">Save Changes to Job</button>
+                    </div>
+                </div>
+                <div class="row" ng-show = "errorMessage.length > 0">
+                    <div class="col-md-4 col-md-offset-3" style = "text-align:center">
+                        <h3>{{errorMessage}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

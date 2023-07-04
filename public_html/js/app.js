@@ -21,6 +21,7 @@
         'enter-work',
         'create-job',
         'edit-job',
+        'edit-work',
         'customers',
         'edit-customers',
         'view-customer',

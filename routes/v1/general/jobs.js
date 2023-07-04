@@ -35,31 +35,33 @@ router.get('/:status', function (req, res) {
     function getSomeJobTypes(err, user) { //logger.debug(user);
         var array = [];
 
-        var sqlQuery = "SELECT a.machine as Machine,\
-                 a.tacho as Tacho,\
-                 a.site as Site,\
-                 a.description as Description,\
-                 a.order_number as OrderNumber,\
-                 a.id_number as ID_Number,\
-                 a.jlg_jobnumber as Job_Number,\
-                 a.creation_date as Creation_Date,\
-                 a.finished as Finished,\
-                 a.invoiced as Invoiced,\
-                  a.priority as Priority, \
-                 b.idcustomer as Customer_dbid,\
-                 b.name as Customer,\
-                 a.idjob as DBID, \
-                 js.description as Status, \
-                 a.job_status_idjob_status as StatusID, \
-                 IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked\
-                 FROM job a \
-                 JOIN customer b \
-                 ON b.idcustomer = a.customer_idcustomer\
-                 JOIN job_status js \
-                 ON js.idjob_status = a.job_status_idjob_status\
-                 LEFT JOIN (SELECT * FROM (SELECT stoptime, job_idjob FROM work_instance ORDER BY stoptime DESC) as temp GROUP BY job_idjob) as c\
-                 ON c.job_idjob = a.idjob \
-                 WHERE job_status_idjob_status = ?";
+        var sqlQuery = `SELECT 
+        a.machine as Machine,
+        a.tacho as Tacho,
+        a.site as Site,
+        a.description as Description,
+        a.order_number as OrderNumber,
+        a.id_number as ID_Number,
+        a.jlg_jobnumber as Job_Number,
+        a.creation_date as Creation_Date,
+        a.finished as Finished,
+        a.invoiced as Invoiced,
+        a.priority as Priority, 
+        b.idcustomer as Customer_dbid,
+        b.name as Customer,
+        a.idjob as DBID, 
+        js.description as Status, 
+        a.job_status_idjob_status as StatusID, 
+        IF(c.stoptime IS NULL, 'No Work Recorded', c.stoptime) as Last_Worked
+    FROM job a 
+    JOIN customer b ON b.idcustomer = a.customer_idcustomer
+    JOIN job_status js ON js.idjob_status = a.job_status_idjob_status
+    LEFT JOIN (
+        SELECT MAX(stoptime) as stoptime, job_idjob 
+        FROM work_instance 
+        GROUP BY job_idjob
+    ) as c ON c.job_idjob = a.idjob 
+    WHERE a.job_status_idjob_status = ?`;
 
 
 

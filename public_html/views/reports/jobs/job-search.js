@@ -157,7 +157,6 @@
                     //}
                 }, false);
                 $scope.$watch('options.companiesSelectedAllAP', function(newValue, oldValue) {
-
                     //if (newValue.length === 0) {
                     //    $scope.getAllJobs();
                     //} else {
