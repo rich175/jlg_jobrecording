@@ -1,149 +1,81 @@
 (function() {
     var app;
     app = angular.module('edit-work', ['jlg_services'])
-        .controller('edit-work-cntrl', ['$scope', '$window', 'customer', 'job', '$stateParams', '$q',
-            function($scope, $window, customer, job, $stateParams, $q) {
+        .controller('edit-work-cntrl', ['$scope', '$window', 'customer', 'job', '$stateParams', '$q', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'jobList', 'settings', 'jobSheet', '$q', '$http',
+            function($scope, $window, customer, job, $stateParams, $q, DTOptionsBuilder, DTColumnDefBuilder, jobList, settings, jobSheet, $q, $http) {
 
 
-                var jn = $stateParams.jn;
+                $scope.jobFound;
 
+                $scope.getJob = function(){                
+                    jobSheet.get('777').then(function(job) {
+                        job = angular.fromJson(job);
+                        $scope.totalTimeSpent = moment.duration(0);
+                        for (var i = 0; i < job.length; i++) {
+                            // get total seconds between the times
+                            var _duration = moment.utc(moment(job[i].stoptime, "DD/MM/YYYY HH:mm:ss").diff(moment(job[i].starttime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss");
+                            job[i].duration = _duration;
 
-                $scope.saving = false;
-                $scope.selectedJob = {};
-                $scope.foundJob = {
-                    job: '',
-                    job_number: '..generating..',
-                    customer: '',
-                    description: '',
-                    tacho: '',
-                    site: '',
-                    machine: '',
-                    serial: '',
-                    mileage: '',
-                    status: '',
-                    orderNumber: ''
-                };
-                $scope.customers = [];
-                $scope.statusOptions = [];
+                            $scope.totalTimeSpent = $scope.totalTimeSpent.add(_duration);
+                            //console.log($scope.totalTimeSpent);
+                            var _date = moment(job[i].starttime);
+                            _date = _date.format('DD/MM/YYYY');
+                            job[i].date = _date;
+                            job[i].date2 = new Date(job[i].starttime);
 
-                $scope.jobList = [];
+                            job[i].starttime = moment(job[i].starttime);
+                            job[i].starttime = job[i].starttime.format('HH:mm:ss');
+                            job[i].stoptime = moment(job[i].stoptime);
+                            job[i].stoptime = job[i].stoptime.format('HH:mm:ss');
 
-                $scope.getCustomers = function() {
-                    var deferred = $q.defer();
-                    customer.allCustomers().then(function(response) {
-                        $scope.customers = response.data;
-                        deferred.resolve();
-                    });
-                    return deferred.promise;
-                };
+                            //job[i].materials.replace( /<br\s*\/?>/ig, "\n" );
+                            //job[i].materials.replace( /<br\s*\/?>/ig, "\n" );
+                            //job[i].materials.replace( /[$,]/g, '' ) :
 
-                $scope.getStatusOptions = function() {
-                    var deferred = $q.defer();
-                    job.statusOptions().then(function(data) {
-                        $scope.statusOptions = data;
-                        deferred.resolve();
-                    });
-                    return deferred.promise;
-                };
-
-                $scope.getJobList = function() {
-                    var deferred = $q.defer();
-                    job.jobList().then(function(data) {
-                        $scope.jobList = data;
-                        deferred.resolve();
-
-                    });
-                    return deferred.promise;
-                };
-
-                $scope.jobSelected = function(_job) {
-
-
-                    for (var i = 0; i < $scope.statusOptions.length; i++) {
-                        if ($scope.statusOptions[i].Description === _job.Status) {
-                            $scope.foundJob.status = $scope.statusOptions[i];
                         }
-                    }
+                        var _days = moment.duration($scope.totalTimeSpent).days();
+                        var _hours = moment.duration($scope.totalTimeSpent).hours();
+                        var _minutes = moment.duration($scope.totalTimeSpent).minutes();
 
-                    for (var i = 0; i < $scope.customers.length; i++) {
-                        if ($scope.customers[i].Customer === _job.Customer) {
-                            $scope.foundJob.customer = $scope.customers[i];
-                        }
-                    }
+                        var _totalHours = _hours + _days * 24
 
-                    $scope.foundJob.job_number = _job.Job_Number;
-                    $scope.foundJob.db_id = _job.DB_ID;
-                    $scope.foundJob.description = _job.Description;
-                    $scope.foundJob.tacho = _job.Tacho;
-                    $scope.foundJob.site = _job.Site;
-                    $scope.foundJob.machine = _job.Machine;
-                    $scope.foundJob.serial = _job.ID_Number;
-                    $scope.foundJob.mileage = _job.Mileage;
-                    $scope.foundJob.orderNumber = _job.OrderNumber;
+                        var totalDurationString = _totalHours.toString() + "h " + _minutes.toString() + "m";
+
+                        console.log("total time= " + _totalHours.toString() + ":" + _minutes.toString());
+
+                        // $scope.selectedJob = job;
+                        /*  $scope.HtmlEncode = function(s) {
+                              var el = document.createElement("div");
+                              el.innerText = el.textContent = s;
+                              s = el.innerHTML;
+                              return s;
+                          }*/
+
+                        $scope.jobFound = {
+                            description: {
+                                number: '',//jobInfo.Job_Number,
+                                description: '',//jobInfo.Description,
+                                customer:'',// jobInfo.Customer,
+                                status: '',//jobInfo.Status
+                            },
+                            totalTime: totalDurationString,
+                            work: job
+                        };
+
+                        $scope.jobLoaded = true;
+                        $scope.dtColumnDefs = [
+                            DTColumnDefBuilder.newColumnDef([0]).withOption('type', 'date')
+                        ];
+                        $scope.dtOptions = DTOptionsBuilder.newOptions()
+                            .withDOM('<"row"BCr><"row"f><"row"rt><"row"ip>')
+                            .withDisplayLength(5)
+                            .withOption('order', [0, 'desc'])
+
+                           
+                    });
                 }
 
-                $scope.getJobList().then(function() {
-                    $scope.getCustomers().then(function() {
-                        $scope.getStatusOptions().then(function() {
-                            if (jn) {
-                                var _matchedJob;
-
-                                for (let i = 0; i < $scope.jobList.length; i++) {
-                                    if (jn === ''+$scope.jobList[i].Job_Number) {
-                                        _matchedJob = $scope.jobList[i];
-                                    }
-                                };
-                                $scope.selectedJob=_matchedJob;
-                                $scope.jobSelected(_matchedJob);
-                            }
-                        })
-                    })
-                });
-
-
-
-
-
-                $scope.errorMessage = '';
-                $scope.saveChanges = function() {
-
-                    if ($scope.foundJob.customer === '') {
-                        $scope.errorMessage = "No Customer Selected!";
-                    } else if ($scope.foundJob.description === '') {
-                        $scope.errorMessage = "No Description Entered!";
-                    } else {
-                        $scope.saving = true;
-
-                        var _toUpdate = {
-                            update: {
-                                machine: $scope.foundJob.machine,
-                                tacho: $scope.foundJob.tacho,
-                                site: $scope.foundJob.site,
-                                description: $scope.foundJob.description,
-                                order_number: $scope.foundJob.orderNumber,
-                                'mileage_ew': $scope.foundJob.mileage,
-                                customer_idcustomer: $scope.foundJob.customer.db_id,
-                                job_status_idjob_status: $scope.foundJob.status.db_id,
-                                id_number: $scope.foundJob.serial
-                            },
-                            id: $scope.foundJob.db_id
-                        }
-
-
-
-                        job.updateJob(_toUpdate).then(function(data) {
-                            $window.location.reload();
-                        })
-                    }
-
-
-
-
-                };
-
-
-
-
+                $scope.getJob();
             }
         ]);
 })();
