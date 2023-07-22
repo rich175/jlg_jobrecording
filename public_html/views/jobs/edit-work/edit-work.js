@@ -1,14 +1,44 @@
-(function() {
+(function () {
     var app;
-    app = angular.module('edit-work', ['jlg_services'])
-        .controller('edit-work-cntrl', ['$scope', '$window', 'customer', 'job', '$stateParams', '$q', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'jobList', 'settings', 'jobSheet', '$q', '$http',
-            function($scope, $window, customer, job, $stateParams, $q, DTOptionsBuilder, DTColumnDefBuilder, jobList, settings, jobSheet, $q, $http) {
+    app = angular.module('edit-work', ['jlg_services', 'report-generator', 'config_module'])
+        .controller('edit-work-cntrl', ['$uibModal', '$scope', '$state', '$window', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'jobList', 'settings', 'jobSheet', '$q', '$http','job',
+            function ($uibModal, $scope, $state, $window, DTOptionsBuilder, DTColumnDefBuilder, jobList, settings, jobSheet, $q, $http, job) {
 
 
                 $scope.jobFound;
 
-                $scope.getJob = function(){                
-                    jobSheet.get('777').then(function(job) {
+                $scope.tableSettings = {
+
+
+                    dtColumnDefs: [
+                        // DTColumnDefBuilder.newColumnDef([0]).withOption('type', 'date')
+                    ],
+                    dtOptions: DTOptionsBuilder.newOptions()
+                        .withDOM('<"row"><"row"lf><"row"rt><"row"ip>')
+                        // .withDisplayLength(5)
+                        // .withOption('order', [0, 'desc'])
+                }
+
+                $scope.jobList = [];
+                $scope.getJobList = function () {
+                    var deferred = $q.defer();
+                    job.jobList().then(function (data) {
+                        $scope.jobList = data;
+                        deferred.resolve();
+
+                    });
+                    return deferred.promise;
+                };
+
+                $scope.getJobList();
+                $scope.jobSelected = function (_job) {
+                    $scope.selectedJob = _job;
+                }
+
+                $scope.getJob = function () {
+                    const job = $scope.selectedJob.Job_Number;
+                    $scope.jobLoaded = false;
+                    jobSheet.get(job).then(function (job) {
                         job = angular.fromJson(job);
                         $scope.totalTimeSpent = moment.duration(0);
                         for (var i = 0; i < job.length; i++) {
@@ -55,7 +85,7 @@
                             description: {
                                 number: '',//jobInfo.Job_Number,
                                 description: '',//jobInfo.Description,
-                                customer:'',// jobInfo.Customer,
+                                customer: '',// jobInfo.Customer,
                                 status: '',//jobInfo.Status
                             },
                             totalTime: totalDurationString,
@@ -63,19 +93,11 @@
                         };
 
                         $scope.jobLoaded = true;
-                        $scope.dtColumnDefs = [
-                            DTColumnDefBuilder.newColumnDef([0]).withOption('type', 'date')
-                        ];
-                        $scope.dtOptions = DTOptionsBuilder.newOptions()
-                            .withDOM('<"row"BCr><"row"f><"row"rt><"row"ip>')
-                            .withDisplayLength(5)
-                            .withOption('order', [0, 'desc'])
 
-                           
+
+
                     });
                 }
-
-                $scope.getJob();
             }
         ]);
 })();

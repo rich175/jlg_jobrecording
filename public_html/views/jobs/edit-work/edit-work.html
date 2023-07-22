@@ -1,58 +1,77 @@
 <div ng-app="edit-work" ng-controller="edit-work-cntrl as myCntrl">
 
-    <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-10">
-            <h2><strong>Edit Job</strong></h2>
-            <small>Use this page to edit existing job information</small>
-        </div>
+  <div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+      <h2><strong>Edit Job</strong></h2>
+      <small>Use this page to edit existing job information</small>
     </div>
-    <div class="row">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <strong></strong>
-            </div>
-            <div class="ibox-content">
-                <h2>Customer: {{jobFound.description.customer}}</h2>
+  </div>
+  <div class="row">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <strong></strong>
+      </div>
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-md-3 offset-3">
+            {{tableSettings}}
+            <h2>Select Job Number:</h2>
+            <select search-contains="true" ng-if="jobList.length >0" class="form-control" chosen ng-model="selectedJob"
+              ng-change="jobSelected(selectedJob)"
+              ng-options="x as x.Job_Number for x in jobList | orderBy:'Job_Number'">
+              <option>
+              <option>
+            </select>
+            <button type="button" ng-click="getJob()" class="btn-primary btn-lg"></button>
+          </div>
+
+        </div>
+        <div class="row" ng-if="jobLoaded">
+          <div class="col-md-12">
+            <h2>Customer: {{jobFound.description.customer}}</h2>
             </br>
             <h3>Description: {{jobFound.description.description}}</h3>
             <h3>Labour: {{jobFound.totalTime}}</h3>
             </br>
-    
-    
+
+
             <div class="row">
-    
-                <div ng-if="jobLoaded">
-                    <table datatable="ng" class="table table-striped table-bordered table-hover dataTables-example" dt-options="dtOptions" dt-column-defs="dtColumnDefs">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Start</th>
-                                <th>Duration</th>
-                                <th>Comments</th>
-                                <th>Materials</th>
-                                <th>Name</th>
-    
-    
-                            </tr>
-                        </thead>
-                        <tbody style="font-size:11px;">
-                            <tr ng-repeat="x in jobFound.work">
-                                <td>{{x.date2 | date : 'dd-MMM-yyyy ' }}</td>
-                                <td>{{x.starttime}}</td>
-                                <td>{{x.duration}}</td>
-    
-                                <td  style="white-space: pre-line">{{x.comments}}</td>
-                                <td  style="white-space: pre-line">{{x.materials}}</td>
-                                <td>{{x.firstname}}</td>
-    
-    
-    
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+
+              <div ng-if="jobLoaded">
+                <table datatable="ng" class="table table-striped table-bordered table-hover dataTables-example"
+                  dt-options="tableSettings.dtOptions" dt-column-defs="tableSettings.dtColumnDefs">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Start</th>
+                      <!-- <th>Duration</th>
+                      <th>Comments</th>
+                      <th>Materials</th>
+                      <th>Name</th> -->
+
+
+                    </tr>
+                  </thead>
+                  <tbody style="font-size:11px;">
+                    <tr ng-repeat="x in jobFound.work">
+                      <td>{{x.date2 | date : 'dd-MMM-yyyy ' }}</td>
+                      <td>{{x.starttime}}</td>
+                      <!-- <td>{{x.duration}}</td>
+
+                      <td style="white-space: pre-line">{{x.comments}}</td>
+                      <td style="white-space: pre-line">{{x.materials}}</td>
+                      <td>{{x.firstname}}</td> -->
+
+
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
